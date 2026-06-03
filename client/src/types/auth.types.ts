@@ -1,9 +1,11 @@
 export interface UserData {
-  email: string;
-  name: string;
-  avatar: string;
-  sub: string;
+  id?: number
+  email?: string;
+  name?: string;
+  avatar?: string;
+  sub?: string;
   role?: string;
+  createdAt?: string
 }
 
 export interface AuthContextType {

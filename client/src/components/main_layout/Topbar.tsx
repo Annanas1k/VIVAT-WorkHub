@@ -1,12 +1,13 @@
 import { useLocation } from 'react-router';
 import { useAuth } from '../../hooks/useAuth';
+import { FaArrowRightFromBracket } from "react-icons/fa6";
 
 const pageTitles: Record<string, string> = {
   '/dashboard': 'Dashboard',
-  // '/tasks':     'Taskuri',
-  // '/projects':  'Proiecte',
-  // '/team':      'Echipă',
-  // '/settings':  'Setări',
+  '/tasks':     'Tasks',
+  '/projects':  'Projects',
+  '/team':      'Team',
+  '/settings':  'Settings',
 };
 
 export const Topbar = () => {
@@ -22,7 +23,7 @@ export const Topbar = () => {
 
   return (
     <header className="h-14 bg-white border-b border-gray-100 flex items-center justify-between px-6">
-      <span className="text-sm font-semibold text-gray-900">{title}</span>
+      <span className="text-sm font-semibold text-gray-900"># {title}</span>
 
       <div className="flex items-center gap-3">
         {/* loc liber — notificări, search etc. */}
@@ -44,7 +45,7 @@ export const Topbar = () => {
           className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors border border-gray-200"
         >
           <i className="ti ti-logout text-base" aria-hidden="true" />
-          Logout
+          Logout <FaArrowRightFromBracket />
         </button>
       </div>
     </header>

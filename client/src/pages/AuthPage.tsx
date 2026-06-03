@@ -2,7 +2,7 @@ import { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router";
 import { useAuth } from "../hooks/useAuth";
-import { loginService, registerService, googleLoginService } from "../services/auth.services";
+import { loginService, registerService, googleLoginService } from "../services/auth.service";
 
 export const AuthPage = () => {
   const { login } = useAuth();

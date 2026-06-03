@@ -1,11 +1,11 @@
 import { NavLink } from 'react-router';
 import { MdDashboard, MdCheckBox, MdFolder, MdGroup, MdSettings } from "react-icons/md";
-import type { IconType } from 'react-icons';
+// import type { IconType } from 'react-icons';
 
 const mainLinks = [
   { to: '/dashboard', label: 'Dashboard', icon: MdDashboard },
-  { to: '/tasks',     label: 'Tasks',     icon: MdCheckBox  },
   { to: '/projects',  label: 'Projects',  icon: MdFolder    },
+  { to: '/tasks',     label: 'Tasks',     icon: MdCheckBox  },
   { to: '/team',      label: 'Team',      icon: MdGroup     },
 ];
 
@@ -20,7 +20,7 @@ export const Sidebar = () => {
     }`;
 
   return (
-    <aside className="w-56 min-w-56 h-screen bg-gray-900 flex flex-col"> {/* ◄ Adăugat h-screen pentru a ocupa toată înălțimea ecranului */}
+    <aside className="w-56 min-w-56 h-screen bg-gray-900 flex flex-col"> 
 
       <div className="px-5 py-5 border-b border-gray-700/50">
         <span className="text-base font-semibold text-white tracking-tight">VIVAT</span>
@@ -37,7 +37,7 @@ export const Sidebar = () => {
           </NavLink>
         ))}
 
-        <div className="mt-auto"> {/* ◄ Trucul Flexbox: Împinge tot ce urmează la bază */}
+        <div className="mt-auto"> 
           <NavLink to={settingsLink.to} className={getLinkClass}>
             <settingsLink.icon size={18} />
             {settingsLink.label}

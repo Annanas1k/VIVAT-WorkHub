@@ -3,7 +3,7 @@ dotenv.config();
 import express, {Application, Request, Response, NextFunction  } from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes"; 
-
+import userRoutes from './routes/user.routes'
 
 
 const app: Application = express()
@@ -23,6 +23,7 @@ app.get('/h', (req: Request, res:Response)=>{
 })
 
 app.use('/api/auth', authRoutes)
+app.use('/api', userRoutes)
 
 
 
