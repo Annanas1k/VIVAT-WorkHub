@@ -1,4 +1,4 @@
-export interface GoogleUserData {
+export interface UserData {
   email: string;
   name: string;
   avatar: string;
@@ -7,8 +7,8 @@ export interface GoogleUserData {
 }
 
 export interface AuthContextType {
-  user: GoogleUserData | null;
+  user: UserData | null;
   isLoading: boolean;
-  login: (userData: GoogleUserData) => void;
+  login: (userData: UserData) => void;
   logout: () => void;
 }

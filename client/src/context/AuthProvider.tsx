@@ -1,10 +1,9 @@
-import {  useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import type { GoogleUserData } from "../types/auth.types";
 import { AuthContext } from "./createContex";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  // 1. Citim direct din localStorage la inițializarea stării (Sincron & Instant)
   const [user, setUser] = useState<GoogleUserData | null>(() => {
     const storedUser = localStorage.getItem('workhub_user');
     if (storedUser) {
@@ -18,9 +17,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return null;
   });
 
-  // 2. Deoarece starea de mai sus se evaluează instant la prima randare, 
-  // isLoading poate fi calculat direct pe baza existenței procesului inițial.
   const [isLoading, setIsLoading] = useState(false);
+
 
   const login = (userData: GoogleUserData) => {
     setUser(userData);
