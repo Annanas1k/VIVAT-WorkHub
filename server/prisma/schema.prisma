@@ -21,6 +21,7 @@ model User {
   googleId  String?  @unique
   password  String?  //auth classic
   role      role     @default(dev)
+  phone     String?  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
