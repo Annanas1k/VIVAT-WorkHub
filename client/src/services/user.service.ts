@@ -3,6 +3,11 @@ import type { UserData } from '../types/auth.types';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
+interface ProfileUpdateResponse {
+  user: UserData;
+  token: string;
+}
+
 export const getUsersService = async (): Promise<UserData[]> => {
   const token = localStorage.getItem('app_token');
   const res = await axios.get(`${API_URL}/users`, {
@@ -17,4 +22,23 @@ export const updateRoleService = async (id: number | string, role: string): Prom
     headers: { Authorization: `Bearer ${token}` }
   });
   return res.data.user;
+};
+
+export const updateProfileService = async (formData: FormData): Promise<ProfileUpdateResponse> =>{
+    const token = localStorage.getItem('app_token')
+    const res = await axios.patch(`${API_URL}/users/profile/update`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      }
+    })
+    return res.data
+}
+
+export const getUserByIdService = async (id: string | number): Promise<UserData> => {
+  const token = localStorage.getItem('app_token');
+  const res = await axios.get(`${API_URL}/users/profile/${id}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  return res.data; 
 };

@@ -6,6 +6,8 @@ import { NotFoundPage } from '../pages/NotFoundPage';
 import { MainLayout } from '../layouts/MainLayout';
 import { DashBoardPage } from '../pages/DashBoardPage';
 import { TeamPage } from '../pages/TeamPage';
+import { SettingsPage } from '../pages/SettingsPage';
+import { ProfilePage } from '../pages/ProfilePage';
 
 const PrivateRoute = ({children}: { children: ReactNode}) =>{
     const {user} = useAuth()
@@ -35,8 +37,12 @@ export const AppRouter = () =>{
                     <MainLayout />
                 </PrivateRoute>
                 }>
+                <Route path='/profile/:id' element={<ProfilePage />} />
                 <Route path='/dashboard' element={<DashBoardPage />} />
                 <Route path='/team' element={<TeamPage />} />
+
+
+                <Route path='/settings' element={<SettingsPage />}/>
                 <Route path='*' element={<NotFoundPage />} />
 
                 </Route>

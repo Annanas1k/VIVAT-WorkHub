@@ -1,17 +1,20 @@
 import { NavLink } from 'react-router';
 import { MdDashboard, MdCheckBox, MdFolder, MdGroup, MdSettings } from "react-icons/md";
 // import type { IconType } from 'react-icons';
+import { useTranslation } from 'react-i18next';
 
 const mainLinks = [
-  { to: '/dashboard', label: 'Dashboard', icon: MdDashboard },
-  { to: '/projects',  label: 'Projects',  icon: MdFolder    },
-  { to: '/tasks',     label: 'Tasks',     icon: MdCheckBox  },
-  { to: '/team',      label: 'Team',      icon: MdGroup     },
+  { to: '/dashboard', label: 'sidebar.dashboard', icon: MdDashboard },
+  { to: '/projects',  label: 'sidebar.projects',  icon: MdFolder    },
+  { to: '/tasks',     label: 'sidebar.tasks',     icon: MdCheckBox  },
+  { to: '/team',      label: 'sidebar.team',      icon: MdGroup     },
 ];
 
-const settingsLink = { to: '/settings', label: 'Settings', icon: MdSettings };
+const settingsLink = { to: '/settings', label: 'sidebar.settings', icon: MdSettings };
 
 export const Sidebar = () => {
+  const {t} = useTranslation()
+
   const getLinkClass = ({ isActive }: { isActive: boolean }) =>
     `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all no-underline
     ${isActive
@@ -33,14 +36,14 @@ export const Sidebar = () => {
         {mainLinks.map(({ to, label, icon: Icon }) => (
           <NavLink key={to} to={to} className={getLinkClass}>
             <Icon size={18} />
-            {label}
+            {t(label)}
           </NavLink>
         ))}
 
         <div className="mt-auto"> 
           <NavLink to={settingsLink.to} className={getLinkClass}>
             <settingsLink.icon size={18} />
-            {settingsLink.label}
+            {t(settingsLink.label)}
           </NavLink>
         </div>
 

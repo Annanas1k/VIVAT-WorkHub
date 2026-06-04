@@ -23,3 +23,4 @@ export const googleLoginService = async (idToken: string): Promise<AuthResponce>
     const res = await axios.post(`${API_URL}/auth/google`, {idToken})
     return res.data
 }
+

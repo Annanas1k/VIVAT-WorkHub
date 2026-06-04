@@ -1,0 +1,42 @@
+{
+  "profile": {
+    "title": "Profilul Meu",
+    "subtitle": "Gestionează setările contului și informațiile personale",
+    "name": "Nume Complet",
+    "email": "Adresă de Email",
+    "role": "Rol Cont",
+    "security": "Securitate",
+    "curr_pass": "Parolă Curentă",
+    "new_pass": "Parolă Nouă",
+    "save": "Salvează Modificările",
+    "upload_btn": "Schimbă Fotografia",
+    "size_error": "Fișierul este prea mare! Dimensiunea maximă permisă este de 2MB.",
+    "success": "Profilul a fost actualizat cu succes!"
+  },
+  "team": {
+    "title": "Echipă",
+    "members": "{{count}} membri",
+    "search_placeholder": "Caută după nume sau email...",
+    "filter_all": "Toți",
+    "table_user": "Utilizator",
+    "table_email": "Email",
+    "table_role": "Rol",
+    "table_joined": "Alăturat la",
+    "badge_you": "tu",
+    "no_users": "Nu au fost găsiți utilizatori",
+    "loading": "Se încarcă echipa...",
+    "error_update": "Nu s-a putut actualiza rolul utilizatorului."
+  },
+  "sidebar": {
+    "dashboard": "Panou de Control",
+    "projects": "Proiecte",
+    "tasks": "Sarcini",
+    "team": "Echipă",
+    "settings": "Setări",
+    "language": "Limbă",
+    "profile": "Profil"
+  },
+  "topbar": {
+    "logout": "Deconectare"
+  }
+}

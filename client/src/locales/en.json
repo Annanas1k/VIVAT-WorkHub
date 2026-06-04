@@ -1,0 +1,42 @@
+{
+  "profile": {
+    "title": "My Profile",
+    "subtitle": "Manage your account settings and personal information",
+    "name": "Full Name",
+    "email": "Email Address",
+    "role": "Account Role",
+    "security": "Security",
+    "curr_pass": "Current Password",
+    "new_pass": "New Password",
+    "save": "Save Changes",
+    "upload_btn": "Change Photo",
+    "size_error": "File is too large! Maximum allowed size is 2MB.",
+    "success": "Profile updated successfully!"
+  },
+    "team": {
+    "title": "Team",
+    "members": "{{count}} members",
+    "search_placeholder": "Search by name or email...",
+    "filter_all": "All",
+    "table_user": "User",
+    "table_email": "Email",
+    "table_role": "Role",
+    "table_joined": "Joined",
+    "badge_you": "you",
+    "no_users": "No users found",
+    "loading": "Loading team...",
+    "error_update": "Could not update user role."
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "projects": "Projects",
+    "tasks": "Tasks",
+    "team": "Team",
+    "settings": "Settings",
+    "language": "Language",
+    "profile": "Profile"
+  },
+  "topbar": {
+    "logout": "Logout"
+  }
+}

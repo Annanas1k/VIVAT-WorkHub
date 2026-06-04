@@ -5,6 +5,8 @@ export interface UserData {
   avatar?: string;
   sub?: string;
   role?: string;
+  phone?: string
+  googleId?: string
   createdAt?: string
 }
 
@@ -13,4 +15,5 @@ export interface AuthContextType {
   isLoading: boolean;
   login: (userData: UserData) => void;
   logout: () => void;
+  updateUser: (newFields: Partial<UserData>) => void; 
 }
