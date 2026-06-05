@@ -1,103 +1,83 @@
 import { Request, Response } from "express";
 import prisma from "../config/prisma";
 import { AuthRequest } from '../middleware/auth.middleware';
-import { role } from "@prisma/client"; 
+import { role } from "@prisma/client";
 import bcrypt from 'bcryptjs';
-import { JsonArray } from '../../generated/prisma/internal/prismaNamespace';
 import jwt from 'jsonwebtoken';
 import { uploadAvatar } from "../middleware/upload.middleware";
 
-
-
-
-
-// Extragem toate valorile validede roluri pentru validare directă în runtime
 const validRoles = Object.values(role);
 
-
-
 // ─────────────────────────────────────────
-// GET /admin/users
+// GET /api/users
 // ─────────────────────────────────────────
-
 export const getUsersHandler = async (req: Request, res: Response): Promise<any> => {
-    try {
-        const users = await prisma.user.findMany({
-            select: {
-                id: true,
-                name: true,
-                email: true,
-                avatar: true,
-                role: true,
-                phone: true,
-                createdAt: true,
-            },
-            orderBy: { createdAt: 'asc' }
-        });
-        return res.status(200).json({ users });
-    } catch (error) {
-        console.error("Get Users Error:", error);
-        return res.status(500).json({ error: 'server error' });
-    }
+  try {
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        avatar: true,
+        role: true,
+        phone: true,
+        createdAt: true,
+      },
+      orderBy: { createdAt: 'asc' },
+    });
+    return res.status(200).json({ users });
+  } catch (error) {
+    console.error('getUsersHandler Error:', error);
+    return res.status(500).json({ error: 'Server error' });
+  }
 };
 
-
 // ─────────────────────────────────────────
-// GET /users/:id
+// GET /api/users/:id
 // ─────────────────────────────────────────
+export const getUserByIdHandler = async (req: Request, res: Response): Promise<any> => {
+  const { id } = req.params;
 
-export const getUserByIdHandler = async (req: Request, res: Response): Promise<any> =>{
-  const {id} = req.params
-  
-  try{
-      const user = await prisma.user.findUnique({
-        where: {id: Number(id)},
-        select: { id: true, name: true, email: true, role: true, avatar: true, phone: true }
-      })
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: Number(id) },
+      select: { id: true, name: true, email: true, role: true, avatar: true, phone: true },
+    });
 
-      if(!user){
-        return res.status(404).json({error: 'user not found'})
-      }
-      return res.status(200).json( user );
+    if (!user) return res.status(404).json({ error: 'User not found' });
 
-  }catch(error){
-    console.error(error)
-    return res.status(500).json({error: 'server error'})
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error('getUserByIdHandler Error:', error);
+    return res.status(500).json({ error: 'Server error' });
   }
-}
+};
 
 // ─────────────────────────────────────────
-// POST /users
+// POST /api/users
 // ─────────────────────────────────────────
 export const createUserHandler = async (req: AuthRequest, res: Response): Promise<any> => {
   const { name, email, password, phone, role: userRole } = req.body;
- 
+
   if (!name || !email || !password) {
     return res.status(400).json({ error: 'Name, email and password are required.' });
   }
- 
-  const validRoles = Object.values(role);
+
   if (userRole && !validRoles.includes(userRole)) {
     return res.status(400).json({ error: `Invalid role. Valid roles: ${validRoles.join(', ')}` });
   }
- 
+
   try {
-    // Verificăm dacă email-ul există deja
     const existing = await prisma.user.findUnique({ where: { email } });
-    if (existing) {
-      return res.status(409).json({ error: 'A user with this email already exists.' });
-    }
- 
-    // Verificăm unicitatea telefonului dacă e furnizat
+    if (existing) return res.status(409).json({ error: 'A user with this email already exists.' });
+
     if (phone) {
       const existingPhone = await prisma.user.findFirst({ where: { phone } });
-      if (existingPhone) {
-        return res.status(409).json({ error: 'Phone number already in use.' });
-      }
+      if (existingPhone) return res.status(409).json({ error: 'Phone number already in use.' });
     }
- 
+
     const hashedPassword = await bcrypt.hash(password, 10);
- 
+
     const newUser = await prisma.user.create({
       data: {
         name,
@@ -107,182 +87,125 @@ export const createUserHandler = async (req: AuthRequest, res: Response): Promis
         role: userRole || 'member',
       },
       select: {
-        id: true,
-        name: true,
-        email: true,
-        avatar: true,
-        role: true,
-        phone: true,
-        createdAt: true,
+        id: true, name: true, email: true,
+        avatar: true, role: true, phone: true, createdAt: true,
       },
     });
- 
+
     return res.status(201).json({ user: newUser });
   } catch (error) {
-    console.error('adminCreateUser Error:', error);
+    console.error('createUserHandler Error:', error);
     return res.status(500).json({ error: 'Server error' });
   }
 };
- 
-
 
 // ─────────────────────────────────────────
-// PATCH /users/:id
+// PATCH /api/users/:id
+// Acoperă și schimbarea rolului — nu mai e nevoie de updateRoleHandler
 // ─────────────────────────────────────────
 export const updateUserHandler = async (req: AuthRequest, res: Response): Promise<any> => {
   const { id } = req.params;
   const { name, email, phone, role: newRole, password } = req.body;
- 
-  const validRoles = Object.values(role);
+
   if (newRole && !validRoles.includes(newRole)) {
     return res.status(400).json({ error: `Invalid role. Valid roles: ${validRoles.join(', ')}` });
   }
- 
+
+  // Adminul nu își poate schimba propriul rol
+  if (newRole && Number(req.user?.userId) === Number(id)) {
+    return res.status(400).json({ error: 'You cannot change your own role.' });
+  }
+
   try {
     const user = await prisma.user.findUnique({ where: { id: Number(id) } });
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
- 
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
     const updateData: any = {};
- 
+
     if (name) updateData.name = name;
     if (newRole) updateData.role = newRole;
- 
+
     if (email && email !== user.email) {
       const emailTaken = await prisma.user.findUnique({ where: { email } });
-      if (emailTaken) {
-        return res.status(409).json({ error: 'Email already in use by another account.' });
-      }
+      if (emailTaken) return res.status(409).json({ error: 'Email already in use by another account.' });
       updateData.email = email;
     }
- 
+
     if (phone !== undefined) {
       if (phone !== '' && phone !== user.phone) {
         const phoneTaken = await prisma.user.findFirst({
           where: { phone, NOT: { id: Number(id) } },
         });
-        if (phoneTaken) {
-          return res.status(409).json({ error: 'Phone number already in use by another account.' });
-        }
+        if (phoneTaken) return res.status(409).json({ error: 'Phone number already in use by another account.' });
       }
       updateData.phone = phone || null;
     }
- 
+
     if (password) {
       updateData.password = await bcrypt.hash(password, 10);
     }
- 
+
     const updatedUser = await prisma.user.update({
       where: { id: Number(id) },
       data: updateData,
       select: {
-        id: true,
-        name: true,
-        email: true,
-        avatar: true,
-        role: true,
-        phone: true,
-        createdAt: true,
+        id: true, name: true, email: true,
+        avatar: true, role: true, phone: true, createdAt: true,
       },
     });
- 
+
     return res.status(200).json({ user: updatedUser });
   } catch (error) {
-    console.error('adminUpdateUser Error:', error);
+    console.error('updateUserHandler Error:', error);
     return res.status(500).json({ error: 'Server error' });
   }
 };
 
 // ─────────────────────────────────────────
-// DELETE /users/:id
+// DELETE /api/users/:id
 // ─────────────────────────────────────────
 export const deleteUserHandler = async (req: AuthRequest, res: Response): Promise<any> => {
   const { id } = req.params;
- 
+
   if (Number(req.user?.userId) === Number(id)) {
     return res.status(400).json({ error: 'You cannot delete your own account.' });
   }
- 
+
   try {
     const user = await prisma.user.findUnique({ where: { id: Number(id) } });
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
- 
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
     await prisma.user.delete({ where: { id: Number(id) } });
- 
+
     return res.status(200).json({ message: `User "${user.name}" deleted successfully.` });
   } catch (error) {
-    console.error('adminDeleteUser Error:', error);
+    console.error('deleteUserHandler Error:', error);
     return res.status(500).json({ error: 'Server error' });
   }
 };
 
-
-
-
-
-
-
-
-
-
-
-
-export const updateRoleHandler = async (req: AuthRequest, res: Response): Promise<any> => {
-      console.log('PATCH HIT', req.params, req.body, req.user); 
-  const { id } = req.params;
-  const { role: newRole } = req.body; 
-
-  const targetId = Number(id); 
-
-  if (Number(req.user?.userId) === targetId) {
-    return res.status(400).json({ error: 'You cannot change your own role' });
-  }
-
-  try {
-    const updated = await prisma.user.update({
-      where: { id: targetId }, 
-      data: { role: newRole },
-      select: { id: true, name: true, email: true, role: true }
-    });
-    
-    return res.status(200).json({ user: updated });
-  } catch (error) {
-    console.error("Update Role Error:", error);
-    return res.status(500).json({ error: 'Server error' });
-  }
-};
-
-
+// ─────────────────────────────────────────
+// PATCH /api/users/profile/update
+// Editare profil propriu — accesibil oricărui user logat
+// ─────────────────────────────────────────
 export const updateProfileHandler = async (req: AuthRequest, res: Response): Promise<any> => {
   const { userId } = req.user!;
   const { name, currentPassword, newPassword, phone } = req.body;
 
   try {
     const user = await prisma.user.findUnique({ where: { id: Number(userId) } });
-    if (!user) {
-      return res.status(404).json({ error: 'user not found' });
-    }
+    if (!user) return res.status(404).json({ error: 'User not found' });
 
     const updateData: any = {};
 
     if (name) updateData.name = name;
 
-    // Validare phone unic — verificăm dacă numărul există la alt user
     if (phone !== undefined) {
       if (phone !== '') {
         const existingPhone = await prisma.user.findFirst({
-          where: {
-            phone: phone,
-            NOT: { id: Number(userId) }, // excludem userul curent
-          },
+          where: { phone, NOT: { id: Number(userId) } },
         });
-
-        if (existingPhone) {
-          return res.status(400).json({ error: 'Phone number already in use by another account.' });
-        }
+        if (existingPhone) return res.status(400).json({ error: 'Phone number already in use by another account.' });
       }
       updateData.phone = phone;
     }
@@ -292,16 +215,12 @@ export const updateProfileHandler = async (req: AuthRequest, res: Response): Pro
     }
 
     if (newPassword) {
-      if (user.googleId) {
-        return res.status(400).json({ error: 'Google accounts cannot change password here!' });
-      }
-      if (!currentPassword) {
-        return res.status(400).json({ error: 'Current password is required!' });
-      }
+      if (user.googleId) return res.status(400).json({ error: 'Google accounts cannot change password here!' });
+      if (!currentPassword) return res.status(400).json({ error: 'Current password is required!' });
+
       const isMatch = await bcrypt.compare(currentPassword, user.password || '');
-      if (!isMatch) {
-        return res.status(400).json({ error: 'Incorrect current password.' });
-      }
+      if (!isMatch) return res.status(400).json({ error: 'Incorrect current password.' });
+
       updateData.password = await bcrypt.hash(newPassword, 10);
     }
 
@@ -309,13 +228,8 @@ export const updateProfileHandler = async (req: AuthRequest, res: Response): Pro
       where: { id: Number(userId) },
       data: updateData,
       select: {
-        id: true,
-        name: true,
-        email: true,
-        avatar: true,
-        role: true,
-        phone: true,
-        googleId: true,
+        id: true, name: true, email: true,
+        avatar: true, role: true, phone: true, googleId: true,
       },
     });
 
@@ -334,7 +248,7 @@ export const updateProfileHandler = async (req: AuthRequest, res: Response): Pro
 
     return res.status(200).json({ user: updatedUser, token: newToken });
   } catch (error) {
-    console.error('error: ', error);
+    console.error('updateProfileHandler Error:', error);
     return res.status(500).json({ error: 'Server error' });
   }
 };

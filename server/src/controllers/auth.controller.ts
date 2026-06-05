@@ -36,10 +36,10 @@ export const googleLoginHandler = async (req: Request, res: Response): Promise<a
             },
             create: {
                 email: email,
-                name: name,
+                name: name ?? '',
                 avatar: picture,
                 googleId: googleId,
-                role: 'dev'
+                role: 'member'
             },
         })
 
@@ -84,7 +84,7 @@ export const registerHandler = async (req: Request, res: Response): Promise<any>
         }
         const hashedPassword = await bcrypt.hash(password, 10)
         const user = await prisma.user.create({
-            data: {email, name, password: hashedPassword, role: 'dev'}
+            data: {email, name, password: hashedPassword, role: 'member'}
         })
 
         const appToken = jwt.sign(
