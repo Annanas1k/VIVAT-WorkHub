@@ -30,5 +30,10 @@ model User {
 enum role {
   admin
   manager
+  team_lead
+  front_dev
+  back_dev
+  qa
+  designer
   dev
 }

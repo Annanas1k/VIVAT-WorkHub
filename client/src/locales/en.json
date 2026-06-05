@@ -38,5 +38,15 @@
   },
   "topbar": {
     "logout": "Logout"
+  },
+  "roles": {
+    "admin": "Administrator",
+    "manager": "Manager",
+    "team_lead": "Team Lead",
+    "front_dev": "Frontend Developer",
+    "back_dev": "Backend Developer",
+    "qa": "QA Tester",
+    "designer": "UI/UX Designer",
+    "dev": "Developer"
   }
 }

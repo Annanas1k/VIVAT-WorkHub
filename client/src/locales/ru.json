@@ -38,5 +38,15 @@
   },
   "topbar": {
     "logout": "Выйти"
+  },
+  "roles": {
+    "admin": "Администратор",
+    "manager": "Менеджер",
+    "team_lead": "Тимлид",
+    "front_dev": "Frontend-разработчик",
+    "back_dev": "Backend-разработчик",
+    "qa": "QA-тестировщик",
+    "designer": "UI/UX-дизайнер",
+    "dev": "Разработчик"
   }
 }

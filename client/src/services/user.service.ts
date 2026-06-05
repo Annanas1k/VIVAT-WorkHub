@@ -26,7 +26,7 @@ export const updateRoleService = async (id: number | string, role: string): Prom
 
 export const updateProfileService = async (formData: FormData): Promise<ProfileUpdateResponse> =>{
     const token = localStorage.getItem('app_token')
-    const res = await axios.patch(`${API_URL}/users/profile/update`, formData, {
+    const res = await axios.patch(`${API_URL}/users/update`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'multipart/form-data',
@@ -37,7 +37,7 @@ export const updateProfileService = async (formData: FormData): Promise<ProfileU
 
 export const getUserByIdService = async (id: string | number): Promise<UserData> => {
   const token = localStorage.getItem('app_token');
-  const res = await axios.get(`${API_URL}/users/profile/${id}`, {
+  const res = await axios.get(`${API_URL}/users/${id}`, {
     headers: { Authorization: `Bearer ${token}` }
   });
   return res.data; 

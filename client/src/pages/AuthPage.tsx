@@ -38,6 +38,7 @@ export const AuthPage = () => {
   const handleGoogle = async (credentialResponse: any) => {
     try {
       const data = await googleLoginService(credentialResponse.credential);
+      
       login(data.user);
       localStorage.setItem('app_token', data.token);
       navigate('/dashboard');

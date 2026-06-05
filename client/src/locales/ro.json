@@ -38,5 +38,15 @@
   },
   "topbar": {
     "logout": "Deconectare"
+  },
+  "roles": {
+    "admin": "Administrator",
+    "manager": "Manager",
+    "team_lead": "Șef de Echipă",
+    "front_dev": "Dezvoltator Frontend",
+    "back_dev": "Dezvoltator Backend",
+    "qa": "Tester QA",
+    "designer": "Designer UI/UX",
+    "dev": "Dezvoltator"
   }
 }

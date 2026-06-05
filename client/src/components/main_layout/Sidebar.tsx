@@ -1,7 +1,9 @@
-import { NavLink } from 'react-router';
+import { NavLink, Link } from 'react-router';
 import { MdDashboard, MdCheckBox, MdFolder, MdGroup, MdSettings } from "react-icons/md";
 // import type { IconType } from 'react-icons';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../../hooks/useAuth';
+import { RiAdminFill } from "react-icons/ri";
 
 const mainLinks = [
   { to: '/dashboard', label: 'sidebar.dashboard', icon: MdDashboard },
@@ -14,6 +16,7 @@ const settingsLink = { to: '/settings', label: 'sidebar.settings', icon: MdSetti
 
 export const Sidebar = () => {
   const {t} = useTranslation()
+  const {user} = useAuth()
 
   const getLinkClass = ({ isActive }: { isActive: boolean }) =>
     `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all no-underline
@@ -39,7 +42,15 @@ export const Sidebar = () => {
             {t(label)}
           </NavLink>
         ))}
-
+        {user?.role === 'admin' && (
+          <Link 
+            to="/admin" 
+            className="flex items-center gap-3 px-4 py-2 text-sm text-gray-500 hover:text-gray-100 rounded-lg transition-colors"
+          >
+            <RiAdminFill className="text-lg shrink-0" />
+            <span>{t('sidebar.admin_panel', 'Admin Panel')}</span>
+          </Link>
+        )}
         <div className="mt-auto"> 
           <NavLink to={settingsLink.to} className={getLinkClass}>
             <settingsLink.icon size={18} />

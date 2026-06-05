@@ -8,6 +8,8 @@ import { DashBoardPage } from '../pages/DashBoardPage';
 import { TeamPage } from '../pages/TeamPage';
 import { SettingsPage } from '../pages/SettingsPage';
 import { ProfilePage } from '../pages/ProfilePage';
+import { AdminDashboardPage } from '../pages/admin/AdminDashboardPage';
+import { AdminUsersPage } from '../pages/admin/AdminUsersPage';
 
 const PrivateRoute = ({children}: { children: ReactNode}) =>{
     const {user} = useAuth()
@@ -43,6 +45,11 @@ export const AppRouter = () =>{
 
 
                 <Route path='/settings' element={<SettingsPage />}/>
+
+                <Route path='/admin' >
+                    <Route index element={<AdminDashboardPage />} />
+                    <Route path='/admin/users' element={<AdminUsersPage />} />
+                </Route>
                 <Route path='*' element={<NotFoundPage />} />
 
                 </Route>
