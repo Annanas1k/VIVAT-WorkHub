@@ -9,7 +9,10 @@ const pageTitles: Record<string, string> = {
   '/projects':  'sidebar.projects',
   '/team':      'sidebar.team',
   '/settings':  'sidebar.settings',
-  '/profile':   'sidebar.profile'
+  '/profile':   'sidebar.profile',
+  '/admin/logs':'sidebar.logs',
+  '/admin/logs/:id':'sidebar.logs',
+
 };
 
 export const Topbar = () => {

@@ -34,7 +34,9 @@
     "team": "Team",
     "settings": "Settings",
     "language": "Language",
-    "profile": "Profile"
+    "profile": "Profile",
+    "customers": "Customers",
+    "logs": "Logs"
   },
   "topbar": {
     "logout": "Logout"
@@ -48,5 +50,19 @@
     "qa": "QA Tester",
     "designer": "UI/UX Designer",
     "dev": "Developer"
+  },
+  "logs": {
+    "title": "System Logs",
+    "subtitle": "Complete history of system actions",
+    "loading": "Loading activity logs...",
+    "no_logs": "No recorded activities found.",
+    "action": "Action",
+    "target": "Entity",
+    "description": "Description / Note",
+    "date": "Date & Time"
+  },
+  "common": {
+    "refresh": "Refresh",
+    "view_details": "View Details"
   }
 }

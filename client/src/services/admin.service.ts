@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type { UserData } from '../types/auth.types';
+import type {  DetailedLogResponse, GetLogsResponse } from '../types/logs.types';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -7,6 +8,10 @@ const getAuthHeaders = () => {
   const token = localStorage.getItem('app_token');
   return { headers: { Authorization: `Bearer ${token}` } };
 };
+
+// ─────────────────────────────────────────
+// USER CRUD FETCH
+// ─────────────────────────────────────────
 
 export const adminGetUsers = async (): Promise<UserData[]> => {
   const res = await axios.get(`${API_URL}/users`, getAuthHeaders());
@@ -27,3 +32,18 @@ export const adminDeleteUser = async (id: number | string): Promise<{ message: s
   const res = await axios.delete(`${API_URL}/users/${id}`, getAuthHeaders());
   return res.data;
 };
+
+
+// ─────────────────────────────────────────
+// LOGS CRUD FETCH
+// ─────────────────────────────────────────
+
+export const adminGetAllLogs = async (): Promise<GetLogsResponse> => {
+  const res = await axios.get(`${API_URL}/logs`, getAuthHeaders())
+  return res.data
+}
+
+export const adminGetLogByIdLog = async (id: string | number): Promise<DetailedLogResponse> =>{
+  const res = await axios.get(`${API_URL}/logs/${id}`, getAuthHeaders())
+  return res.data
+}
