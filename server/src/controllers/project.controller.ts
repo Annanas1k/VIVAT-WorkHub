@@ -34,11 +34,11 @@ export const getAllProjectsHandler = async (req: AuthRequest, res: Response): Pr
 // ─────────────────────────────────────────
 
 export const getProjectByIdHandler = async (req: AuthRequest, res: Response): Promise<any> => {
-    const { pId } = req.params
+    const { id } = req.params
 
     try {
         const project = await prisma.project.findUnique({
-            where: { id: Number(pId) },
+            where: { id: Number(id) },
             include: {
                 createdBy: { select: { id: true, name: true, avatar: true } },
                 customer: { select: { id: true, name: true, type: true, email: true, phone: true } },
@@ -127,11 +127,11 @@ export const createProjectHandler = async (req: AuthRequest, res: Response): Pro
 // ─────────────────────────────────────────
 
 export const updateProjectHandler = async (req: AuthRequest, res: Response): Promise<any> => {
-    const { pId } = req.params
+    const { id } = req.params
     const { name, description, status, startDate, dueDate, budget, customerId } = req.body
 
     try {
-        const project = await prisma.project.findUnique({ where: { id: Number(pId) } })
+        const project = await prisma.project.findUnique({ where: { id: Number(id) } })
         if (!project) return res.status(404).json({ error: 'Project not found' })
 
         if (customerId) {
@@ -149,7 +149,7 @@ export const updateProjectHandler = async (req: AuthRequest, res: Response): Pro
         if (customerId !== undefined) updateData.customerId = customerId ? Number(customerId) : null
 
         const updated = await prisma.project.update({
-            where: { id: Number(pId) },
+            where: { id: Number(id) },
             data: updateData,
             include: {
                 createdBy: { select: { id: true, name: true, avatar: true } },
@@ -174,13 +174,13 @@ export const updateProjectHandler = async (req: AuthRequest, res: Response): Pro
 // ─────────────────────────────────────────
 
 export const deleteProjectHandler = async (req: AuthRequest, res: Response): Promise<any> => {
-    const { pId } = req.params
+    const { id } = req.params
 
     try {
-        const project = await prisma.project.findUnique({ where: { id: Number(pId) } })
+        const project = await prisma.project.findUnique({ where: { id: Number(id) } })
         if (!project) return res.status(404).json({ error: 'Project not found' })
 
-        await prisma.project.delete({ where: { id: Number(pId) } })
+        await prisma.project.delete({ where: { id: Number(id) } })
         return res.status(200).json({ message: `Project: ${project.name} was successfully deleted` })
     } catch (error) {
         console.error('deleteProject error:', error)
@@ -193,27 +193,27 @@ export const deleteProjectHandler = async (req: AuthRequest, res: Response): Pro
 // ─────────────────────────────────────────
 
 export const addProjectMemberHandler = async (req: AuthRequest, res: Response): Promise<any> => {
-    const { pId } = req.params
+    const { id } = req.params
     const { userId, role } = req.body
 
     if (!userId) return res.status(400).json({ error: 'userId is required' })
 
     try {
-        const project = await prisma.project.findUnique({ where: { id: Number(pId) } })
+        const project = await prisma.project.findUnique({ where: { id: Number(id) } })
         if (!project) return res.status(404).json({ error: 'Project not found' })
 
         const user = await prisma.user.findUnique({ where: { id: Number(userId) } })
         if (!user) return res.status(404).json({ error: 'User not found' })
 
         const existing = await prisma.projectMember.findUnique({
-            where: { userId_projectId: { userId: Number(userId), projectId: Number(pId) } }
+            where: { userId_projectId: { userId: Number(userId), projectId: Number(id) } }
         })
         if (existing) return res.status(409).json({ error: 'User is already a member of this project' })
 
         const member = await prisma.projectMember.create({
             data: {
                 userId: Number(userId),
-                projectId: Number(pId),
+                projectId: Number(id),
                 role: role || 'member'
             },
             include: {
@@ -233,16 +233,16 @@ export const addProjectMemberHandler = async (req: AuthRequest, res: Response): 
 // ─────────────────────────────────────────
 
 export const removeProjectMemberHandler = async (req: AuthRequest, res: Response): Promise<any> => {
-    const { pId, userId } = req.params
+    const { id, userId } = req.params
 
     try {
         const member = await prisma.projectMember.findUnique({
-            where: { userId_projectId: { userId: Number(userId), projectId: Number(pId) } }
+            where: { userId_projectId: { userId: Number(userId), projectId: Number(id) } }
         })
         if (!member) return res.status(404).json({ error: 'Member not found in this project' })
 
         await prisma.projectMember.delete({
-            where: { userId_projectId: { userId: Number(userId), projectId: Number(pId) } }
+            where: { userId_projectId: { userId: Number(userId), projectId: Number(id) } }
         })
 
         return res.status(200).json({ message: 'Member removed from project' })

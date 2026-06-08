@@ -15,17 +15,11 @@ const router = Router()
 
 router.use(authMiddleware)
 
-// ─────────────────────────────────────────
-// pId => project ID
-// uId => user ID
-// ─────────────────────────────────────────
+router.get('/', getAllProjectsHandler)                              // GET       /api/projects
+router.get('/:id', getProjectByIdHandler)                           // GET       /api/projects/:id
+router.post('/', createProjectHandler)                              // POST      /api/projects
+router.patch('/:id', updateProjectHandler)                          // PATCH     /api/projects/:id
+router.delete('/:id', deleteProjectHandler)                         // DELETE    /api/projects/:id
 
-
-router.get('/', getAllProjectsHandler)
-router.get('/:pId', getProjectByIdHandler)
-router.post('/', createProjectHandler)
-router.patch('/:pId', updateProjectHandler)
-router.delete('/:pId', deleteProjectHandler)
-
-router.post('/:pId/members', addProjectMemberHandler)
-router.delete('/pId/members/:uId')
+router.post('/:id/members', addProjectMemberHandler)                // POST     /api/projects/:id/members
+router.delete('/:id/members/:userId', removeProjectMemberHandler)   // DELETE   /api/projects/:id/members/:userId
