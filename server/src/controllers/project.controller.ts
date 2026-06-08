@@ -1,6 +1,7 @@
 import { Response } from "express"
 import prisma from "../config/prisma"
 import { AuthRequest } from "../middleware/auth.middleware"
+import { logActivity } from "../utils/logger";
 
 // ─────────────────────────────────────────
 // GET /api/projects
@@ -115,6 +116,18 @@ export const createProjectHandler = async (req: AuthRequest, res: Response): Pro
             }
         })
 
+        await logActivity({
+            performedById: Number(userId),
+            action: 'created',
+            entityType: 'Project',
+            entityId: project.id,
+            before: null,
+            after: project,
+            ip: req.ip,
+            userAgent: req.headers['user-agent'],
+            note: `Proiectul "${project.name}" a fost inițializat în sistem.`
+        });
+
         return res.status(201).json({ project })
     } catch (error) {
         console.error('createProject error:', error)
@@ -162,6 +175,18 @@ export const updateProjectHandler = async (req: AuthRequest, res: Response): Pro
             }
         })
 
+        await logActivity({
+            performedById: Number(req.user!.userId),
+            action: 'updated',
+            entityType: 'Project',
+            entityId: updated.id,
+            before: null,
+            after: updated,
+            ip: req.ip,
+            userAgent: req.headers['user-agent'],
+            note: `Proiectul "${updated.name}" a fost actualizat.`
+        });
+
         return res.status(200).json({ project: updated })
     } catch (error) {
         console.error('updateProject error:', error)
@@ -181,6 +206,19 @@ export const deleteProjectHandler = async (req: AuthRequest, res: Response): Pro
         if (!project) return res.status(404).json({ error: 'Project not found' })
 
         await prisma.project.delete({ where: { id: Number(id) } })
+
+        await logActivity({
+            performedById: Number(req.user!.userId),
+            action: 'deleted',
+            entityType: 'Project',
+            entityId: Number(id),
+            before: project,
+            after: null,
+            ip: req.ip,
+            userAgent: req.headers['user-agent'],
+            note: `Proiectul "${project.name}" a fost șters definitiv.`
+        });
+
         return res.status(200).json({ message: `Project: ${project.name} was successfully deleted` })
     } catch (error) {
         console.error('deleteProject error:', error)
@@ -221,6 +259,18 @@ export const addProjectMemberHandler = async (req: AuthRequest, res: Response): 
             }
         })
 
+        await logActivity({
+            performedById: Number(req.user!.userId),
+            action: 'assigned',
+            entityType: 'Project',
+            entityId: Number(id),
+            before: null,
+            after: member,
+            ip: req.ip,
+            userAgent: req.headers['user-agent'],
+            note: `Utilizatorul ${member.user.name} a fost adăugat în echipă cu rolul de "${member.role}".`
+        });
+
         return res.status(201).json({ member })
     } catch (error) {
         console.error('addProjectMember error:', error)
@@ -244,6 +294,18 @@ export const removeProjectMemberHandler = async (req: AuthRequest, res: Response
         await prisma.projectMember.delete({
             where: { userId_projectId: { userId: Number(userId), projectId: Number(id) } }
         })
+
+        await logActivity({
+            performedById: Number(req.user!.userId),
+            action: 'unassigned',
+            entityType: 'Project',
+            entityId: Number(id),
+            before: member,
+            after: null,
+            ip: req.ip,
+            userAgent: req.headers['user-agent'],
+            note: `Utilizatorul ${member} a fost eliminat din echipa proiectului.`
+        });
 
         return res.status(200).json({ message: 'Member removed from project' })
     } catch (error) {

@@ -5,6 +5,7 @@ import { role } from "@prisma/client";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { uploadAvatar } from "../middleware/upload.middleware";
+import { logActivity } from "../utils/logger";
 
 const validRoles = Object.values(role);
 
@@ -25,6 +26,7 @@ export const getUsersHandler = async (req: Request, res: Response): Promise<any>
       },
       orderBy: { createdAt: 'asc' },
     });
+
     return res.status(200).json({ users });
   } catch (error) {
     console.error('getUsersHandler Error:', error);
@@ -92,6 +94,18 @@ export const createUserHandler = async (req: AuthRequest, res: Response): Promis
       },
     });
 
+    await logActivity({
+      performedById: req.user?.userId ? Number(req.user.userId) : null,
+      action: 'created', 
+      entityType: 'User',
+      entityId: newUser.id,
+      before: null,
+      after: newUser,
+      ip: req.ip,
+      userAgent: req.headers['user-agent'],
+      note: `User nou creat: ${newUser.name} (${newUser.email}) cu rolul ${newUser.role}.`
+    });
+
     return res.status(201).json({ user: newUser });
   } catch (error) {
     console.error('createUserHandler Error:', error);
@@ -154,6 +168,22 @@ export const updateUserHandler = async (req: AuthRequest, res: Response): Promis
       },
     });
 
+    const isRoleChanged = newRole && newRole !== user.role;
+
+    await logActivity({
+      performedById: req.user?.userId ? Number(req.user.userId) : null,
+      action: isRoleChanged ? 'role_changed' : 'updated', 
+      entityType: 'User',
+      entityId: updatedUser.id,
+      before: user,
+      after: updatedUser,
+      ip: req.ip,
+      userAgent: req.headers['user-agent'],
+      note: isRoleChanged 
+        ? `Rolul utilizatorului ${user.name} a fost schimbat din "${user.role}" în "${newRole}".`
+        : `User-ul ${user.name} a fost modificat de către un administrator.`
+    });
+
     return res.status(200).json({ user: updatedUser });
   } catch (error) {
     console.error('updateUserHandler Error:', error);
@@ -176,6 +206,19 @@ export const deleteUserHandler = async (req: AuthRequest, res: Response): Promis
     if (!user) return res.status(404).json({ error: 'User not found' });
 
     await prisma.user.delete({ where: { id: Number(id) } });
+
+
+    await logActivity({
+      performedById: req.user?.userId ? Number(req.user.userId) : null,
+      action: 'deleted', // 🟢 Modificat conform enum-ului tău
+      entityType: 'User',
+      entityId: Number(id),
+      before: user,
+      after: null,
+      ip: req.ip,
+      userAgent: req.headers['user-agent'],
+      note: `User-ul "${user.name}" (${user.email}) a fost șters definitiv.`
+    });
 
     return res.status(200).json({ message: `User "${user.name}" deleted successfully.` });
   } catch (error) {

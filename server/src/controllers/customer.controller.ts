@@ -1,9 +1,7 @@
-
 import { Response } from "express"
 import prisma from "../config/prisma"
 import { AuthRequest } from "../middleware/auth.middleware"
-import { JsonObject } from '../../generated/prisma/internal/prismaNamespace';
-import path from 'path';
+import { logActivity } from "../utils/logger";
 
 // ─────────────────────────────────────────
 // GET /api/customers
@@ -88,6 +86,20 @@ export const createCustomerHandler = async (req: AuthRequest, res: Response): Pr
                 createdById: Number(userId)
             }
         })
+
+
+        await logActivity({
+            performedById: Number(userId),
+            action: 'created',
+            entityType: 'Customer',
+            entityId: customer.id,
+            before: null,
+            after: customer,
+            ip: req.ip,
+            userAgent: req.headers['user-agent'],
+            note: `Clientul "${customer.name}" (${customer.type}) a fost înregistrat.`
+        });
+
         return res.status(201).json({customer})
 
     }catch(error){
@@ -144,6 +156,17 @@ export const updateCustomerHandler = async (req: AuthRequest, res: Response): Pr
         data: updateData,
         });
 
+        await logActivity({
+            performedById: Number(userId),
+            action: 'updated',
+            entityType: 'Customer',
+            entityId: updated.id,
+            before: null,
+            after: updated,
+            ip: req.ip,
+            userAgent: req.headers['user-agent'],
+            note: `Datele clientului "${updated.name}" au fost modificate.`
+        });
 
         return res.status(200).json({customer: updated})
     }catch(error){
@@ -165,6 +188,19 @@ export const deleteCustomerHandler = async (req: AuthRequest, res: Response): Pr
         if(!customer) return res.status(404).json({error: 'Customer not found'})
         
         await prisma.customer.delete({where: {id: Number(id)}})
+
+        await logActivity({
+            performedById: Number(userId),
+            action: 'deleted',
+            entityType: 'Customer',
+            entityId: Number(id),
+            before: customer,
+            after: null,
+            ip: req.ip,
+            userAgent: req.headers['user-agent'],
+            note: `Clientul "${customer.name}" a fost șters definitiv din baza de date.`
+        });
+
         return res.status(200).json({message: `Customer: ${customer.name} was succesfully deleted`})
     }catch(error){
         console.log('deleteCustomer error:', error)

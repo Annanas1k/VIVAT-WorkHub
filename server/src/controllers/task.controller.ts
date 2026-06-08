@@ -1,6 +1,7 @@
 import { Response } from "express"
 import prisma from "../config/prisma"
 import { AuthRequest } from "../middleware/auth.middleware"
+import { logActivity } from "../utils/logger";
 
 // ─────────────────────────────────────────
 // GET /api/tasks
@@ -102,6 +103,19 @@ export const createTaskHandler = async (req: AuthRequest, res: Response): Promis
             }
         })
 
+        await logActivity({
+            performedById: Number(userId),
+            action: 'created',
+            entityType: 'Task',
+            entityId: task.id,
+            before: null,
+            after: task,
+            ip: req.ip,
+            userAgent: req.headers['user-agent'],
+            note: `Task-ul "${task.title}" a fost creat.`
+        });
+
+
         return res.status(201).json({ task })
     } catch (error) {
         console.error('createTask error:', error)
@@ -148,6 +162,18 @@ export const updateTaskHandler = async (req: AuthRequest, res: Response): Promis
             }
         })
 
+        await logActivity({
+            performedById: Number(req.user!.userId),
+            action: 'updated',
+            entityType: 'Task',
+            entityId: updated.id,
+            before: null,
+            after: updated,
+            ip: req.ip,
+            userAgent: req.headers['user-agent'],
+            note: `Task-ul "${updated.title}" a fost actualizat.`
+        });
+
         return res.status(200).json({ task: updated })
     } catch (error) {
         console.error('updateTask error:', error)
@@ -167,6 +193,21 @@ export const deleteTaskHandler = async (req: AuthRequest, res: Response): Promis
         if (!task) return res.status(404).json({ error: 'Task not found' })
 
         await prisma.task.delete({ where: { id: Number(id) } })
+
+        await logActivity({
+            performedById: Number(req.user!.userId),
+            action: 'deleted',
+            entityType: 'Task',
+            entityId: Number(id),
+            before: task,
+            after: null,
+            ip: req.ip,
+            userAgent: req.headers['user-agent'],
+            note: `Task-ul "${task.title}" a fost șters definitiv.`
+        });
+
+
+
         return res.status(200).json({ message: `Task: ${task.title} was successfully deleted` })
     } catch (error) {
         console.error('deleteTask error:', error)
@@ -206,6 +247,18 @@ export const addTaskAssigneeHandler = async (req: AuthRequest, res: Response): P
             }
         })
 
+        await logActivity({
+            performedById: Number(req.user!.userId),
+            action: 'assigned',
+            entityType: 'Task',
+            entityId: Number(id),
+            before: null,
+            after: assignee,
+            ip: req.ip,
+            userAgent: req.headers['user-agent'],
+            note: `Utilizatorul ${assignee.user.name} a fost asignat la task-ul cu ID-ul ${id}.`
+        });
+
         return res.status(201).json({ assignee })
     } catch (error) {
         console.error('addTaskAssignee error:', error)
@@ -229,6 +282,18 @@ export const removeTaskAssigneeHandler = async (req: AuthRequest, res: Response)
         await prisma.taskAssignee.delete({
             where: { userId_taskId: { userId: Number(userId), taskId: Number(id) } }
         })
+
+        await logActivity({
+            performedById: Number(req.user!.userId),
+            action: 'unassigned',
+            entityType: 'Task',
+            entityId: Number(id),
+            before: assignee,
+            after: null,
+            ip: req.ip,
+            userAgent: req.headers['user-agent'],
+            note: `Utilizatorul ${assignee} a fost retras de pe acest task.`
+        });
 
         return res.status(200).json({ message: 'Assignee removed from task' })
     } catch (error) {
