@@ -23,3 +23,5 @@ router.delete('/:id', deleteProjectHandler)                         // DELETE   
 
 router.post('/:id/members', addProjectMemberHandler)                // POST     /api/projects/:id/members
 router.delete('/:id/members/:userId', removeProjectMemberHandler)   // DELETE   /api/projects/:id/members/:userId
+
+export default router

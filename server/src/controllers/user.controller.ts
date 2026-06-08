@@ -164,7 +164,7 @@ export const updateUserHandler = async (req: AuthRequest, res: Response): Promis
       data: updateData,
       select: {
         id: true, name: true, email: true,
-        avatar: true, role: true, phone: true, createdAt: true,
+        avatar: true, role: true, phone: true, createdAt: true, updatedAt: true
       },
     });
 

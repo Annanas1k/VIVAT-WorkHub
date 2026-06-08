@@ -22,3 +22,5 @@ router.delete('/:id', deleteTaskHandler)                            // DELETE   
 
 router.post('/:id/assignees', addTaskAssigneeHandler)                 // POST     /api/tasks/:id/assignees
 router.delete('/:id/assignees/:userId', removeTaskAssigneeHandler)    // DELETE   /api/tasks/:id/assignees/:userId
+
+export default router

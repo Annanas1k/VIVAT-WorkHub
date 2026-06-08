@@ -4,6 +4,10 @@ import express, {Application, Request, Response, NextFunction  } from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes"; 
 import userRoutes from './routes/user.routes'
+import projectRoutes from './routes/project.routes'
+import taskRoutes from './routes/task.routes'
+import logRoutes from './routes/log.routes'
+import customersRoutes from './routes/customer.routes'
 import path from 'path';
 
 
@@ -27,6 +31,10 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')))
 
 app.use('/api/auth', authRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/projects', projectRoutes)
+app.use('/api/tasks', taskRoutes)
+app.use('/api/logs', logRoutes)
+app.use('/api/customers', customersRoutes)
 
 
 
