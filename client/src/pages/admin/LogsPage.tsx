@@ -47,7 +47,7 @@ export const LogsPage = () => {
             className="flex flex-wrap items-center gap-x-2 py-2 px-1 text-gray-400 hover:text-indigo-400 "
           >
             <span className="text-gray-600">[{new Date(l.createdAt).toLocaleTimeString('ro-RO')}]</span>
-            <span className="text-indigo-500 font-semibold">ID: #{l.id}</span>
+            <span className="text-indigo-500 font-semibold">#LOG-id-{l.id}</span>
             <span className="text-gray-700">|</span>
             <span className="text-amber-400 uppercase font-bold">{l.action}</span>
             <span className="text-gray-700">|</span>

@@ -44,8 +44,10 @@ console.log(log)
         <p><span className="text-gray-600">LOG ID    :</span> <span className="text-indigo-500">#{log.id}</span></p>
         <p><span className="text-gray-600">ACTION    :</span> <span className="text-amber-400 uppercase font-bold">{log.action}</span></p>
         <p><span className="text-gray-600">TARGET    :</span> <span className="text-emerald-400">{log.entityType} (ID: {log.entityId})</span></p>
-        <p><span className="text-gray-600">OPERATOR  :</span> <span className="text-gray-400">User ID #{log.performedById || 'SYSTEM'}</span></p>
+        <p><span className="text-gray-600">BY  :</span> <span className="text-gray-400">{log.performedBy ? `${log.performedBy.name} (${log.performedBy.role})` : 'SYSTEM'}</span></p>
         <p><span className="text-gray-600">NOTE      :</span> <span className="text-gray-500">{log.note || 'no note provided'}</span></p>
+        <p><span className="text-gray-600">IP ADRESS :</span> <span className="text-gray-500">{log.ip || 'no ip provided'}</span></p>
+        <p><span className="text-gray-600">USER AGENT:</span> <span className="text-gray-500">{log.userAgent || 'no user agetn provided provided'}</span></p>
       </div>
 
       {/* Afișare JSON JSON-Diff brut */}

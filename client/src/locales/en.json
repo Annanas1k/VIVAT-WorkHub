@@ -64,5 +64,51 @@
   "common": {
     "refresh": "Refresh",
     "view_details": "View Details"
+  },
+  "admin": {
+    "nav_users": "Users Management",
+    "nav_customers": "Customers Database",
+    "nav_projects": "Projects Archive",
+    "nav_tasks": "Global Tasks",
+    "nav_cars": "Fleet (WebRent)",
+    "nav_logs": "System Logs",
+    "loading": "Loading data...",
+    "title": "System Users Management",
+    "users_count": "listed users",
+    "btn_add": "Add New User",
+    "confirm_delete": "Are you sure you want to delete this user?",
+    "error_delete": "Error deleting user",
+    "error_save": "Operation failed"
+  },
+  "customers": {
+    "sidebar": {
+      "customers": "Customers",
+      "projects": "projects"
+    },
+    "details": {
+      "empty_state": "[ select a customer from the list to view profile details ]",
+      "id": "ID",
+      "created_at": "CREATED",
+      "type_individual": "individual",
+      "type_company": "company",
+      "section_specs": "Legal / Profile Specs",
+      "company_name": "Registered Name:",
+      "vat_number": "Fiscal Code (VAT):",
+      "reg_number": "Trade Register No:",
+      "first_name": "First Name:",
+      "last_name": "Last Name:",
+      "section_contact": "Contact & Address",
+      "section_notes": "Internal Notes",
+      "section_projects": "Associated Projects",
+      "th_project_name": "Project Name",
+      "th_status": "Status",
+      "no_projects": "[ zero workspace projects assigned to this customer ]"
+    }
+  },
+  "project_status": {
+    "active": "active",
+    "completed": "completed",
+    "pending": "pending",
+    "archived": "archived"
   }
 }
