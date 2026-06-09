@@ -17,7 +17,7 @@ export const getAllCustomersHandler = async (req: AuthRequest, res: Response): P
             orderBy: {createdAt: 'desc'}
         })
 
-        return res.status(200).json({customers})
+        return res.status(200).json(customers)
     }catch(error){
         console.error('getCustomers error: ', error)
         return res.status(500).json({error: 'server error'})

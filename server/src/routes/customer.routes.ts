@@ -12,7 +12,7 @@ import { authMiddleware } from "../middleware/auth.middleware";
 
 const router = Router()
 
-router.use(authMiddleware)
+// router.use(authMiddleware)
 
 router.get('/', getAllCustomersHandler)         // GET      /api/customers
 router.get('/:id', getCustomerByIdHandler)      // GET      /api/customers/id

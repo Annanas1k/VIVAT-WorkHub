@@ -5,6 +5,8 @@ import {
     createTaskHandler,
     updateTaskHandler,
     deleteTaskHandler,
+
+    getTaskAssigneesHandler,
     addTaskAssigneeHandler,
     removeTaskAssigneeHandler
 } from "../controllers/task.controller";
@@ -20,6 +22,8 @@ router.post('/', createTaskHandler)                                 // POST     
 router.patch('/:id', updateTaskHandler)                             // PATCH     /api/tasks/:id
 router.delete('/:id', deleteTaskHandler)                            // DELETE    /api/tasks/:id
 
+
+router.get('/:id/assignees', getTaskAssigneesHandler)                 // GET      /api/tasks/:id/assignees
 router.post('/:id/assignees', addTaskAssigneeHandler)                 // POST     /api/tasks/:id/assignees
 router.delete('/:id/assignees/:userId', removeTaskAssigneeHandler)    // DELETE   /api/tasks/:id/assignees/:userId
 

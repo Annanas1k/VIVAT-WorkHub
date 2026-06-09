@@ -11,7 +11,16 @@ export const getAllLogsHandlers = async (req: AuthRequest, res: Response): Promi
             orderBy: {
                 createdAt: 'desc'
             },
-            take: 50
+            take: 50,
+            include: {
+                performedBy: {
+                    select: {
+                        id: true,
+                        name: true,
+                        role: true
+                    }
+                }
+            }
         })
 
         res.status(200).json({logs})
@@ -26,7 +35,17 @@ export const getLogByIdHandler = async (req: AuthRequest, res: Response): Promis
     const {id} = req.params
     try{
         const log = await prisma.activityLog.findUnique({
-            where: {id: Number(id)}
+            where: {id: Number(id)},
+            include: {
+                performedBy: {
+                    select: {
+                        id: true,
+                        name: true,
+                        role: true
+                    }
+                }
+            }
+            
         })
         if(!log) return res.status(404).json({error: 'log with this id not found'})
         

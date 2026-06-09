@@ -215,6 +215,55 @@ export const deleteTaskHandler = async (req: AuthRequest, res: Response): Promis
     }
 }
 
+
+
+
+
+// ─────────────────────────────────────────
+// GET /api/tasks/:id/assignees
+// ─────────────────────────────────────────
+
+export const getTaskAssigneesHandler = async (req: AuthRequest, res: Response): Promise<any> => {
+    const { id } = req.params
+
+    try {
+        const task = await prisma.task.findUnique({
+            where: { id: Number(id) }
+        })
+
+        if (!task) return res.status(404).json({ error: 'Task not found' })
+
+        const assignees = await prisma.taskAssignee.findMany({
+            where: { taskId: Number(id) },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        role: true,
+                        avatar: true
+                    }
+                }
+            },
+            orderBy: {
+                user: { name: 'asc' }
+            }
+        })
+
+        return res.status(200).json({ assignees })
+    } catch (error) {
+        console.error('getTaskAssignees error:', error)
+        return res.status(500).json({ error: 'server error' })
+    }
+}
+
+
+
+
+
+
+
 // ─────────────────────────────────────────
 // POST /api/tasks/:id/assignees
 // ─────────────────────────────────────────

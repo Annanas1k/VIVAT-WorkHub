@@ -5,6 +5,8 @@ import {
     createProjectHandler,
     updateProjectHandler,
     deleteProjectHandler,
+
+    getProjectMembersHandler,
     addProjectMemberHandler,
     removeProjectMemberHandler
 } from '../controllers/project.controller';
@@ -21,6 +23,8 @@ router.post('/', createProjectHandler)                              // POST     
 router.patch('/:id', updateProjectHandler)                          // PATCH     /api/projects/:id
 router.delete('/:id', deleteProjectHandler)                         // DELETE    /api/projects/:id
 
+
+router.get('/:id/members', getProjectMembersHandler)                // GET      /api/projects/:id/members
 router.post('/:id/members', addProjectMemberHandler)                // POST     /api/projects/:id/members
 router.delete('/:id/members/:userId', removeProjectMemberHandler)   // DELETE   /api/projects/:id/members/:userId
 

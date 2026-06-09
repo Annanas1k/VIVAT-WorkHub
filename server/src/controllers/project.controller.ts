@@ -226,13 +226,62 @@ export const deleteProjectHandler = async (req: AuthRequest, res: Response): Pro
     }
 }
 
+
+
+
+// ─────────────────────────────────────────
+// GET /api/projects/:id/members
+// ─────────────────────────────────────────
+export const getProjectMembersHandler = async (req: AuthRequest, res: Response): Promise<any> => {
+    const { id } = req.params 
+
+    try {
+        const project = await prisma.project.findUnique({ 
+            where: { id: Number(id) } 
+        })
+        
+        if (!project) {
+            return res.status(404).json({ error: 'Project not found' })
+        }
+
+        const members = await prisma.projectMember.findMany({
+            where: { 
+                projectId: Number(id) 
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        role: true
+                    }
+                }
+            },
+            orderBy: {
+                user: {
+                    name: 'asc'
+                }
+            }
+        })
+
+        return res.status(200).json({ members })
+
+    } catch (error) {
+        console.error('getProjectMembers error:', error)
+        return res.status(500).json({ error: 'server error' })
+    }
+}
+
+
+
+
 // ─────────────────────────────────────────
 // POST /api/projects/:id/members
 // ─────────────────────────────────────────
-
 export const addProjectMemberHandler = async (req: AuthRequest, res: Response): Promise<any> => {
     const { id } = req.params
-    const { userId, role } = req.body
+    const { userId } = req.body // Am eliminat destructurarea lui role
 
     if (!userId) return res.status(400).json({ error: 'userId is required' })
 
@@ -251,8 +300,7 @@ export const addProjectMemberHandler = async (req: AuthRequest, res: Response): 
         const member = await prisma.projectMember.create({
             data: {
                 userId: Number(userId),
-                projectId: Number(id),
-                role: role || 'member'
+                projectId: Number(id)
             },
             include: {
                 user: { select: { id: true, name: true, avatar: true, role: true } }
@@ -268,7 +316,8 @@ export const addProjectMemberHandler = async (req: AuthRequest, res: Response): 
             after: member,
             ip: req.ip,
             userAgent: req.headers['user-agent'],
-            note: `Utilizatorul ${member.user.name} a fost adăugat în echipă cu rolul de "${member.role}".`
+            // Folosim rolul lui global (member.user.role) în textul notei
+            note: `Utilizatorul ${member.user.name} (${member.user.role}) a fost adăugat în echipa proiectului.`
         });
 
         return res.status(201).json({ member })
@@ -281,13 +330,13 @@ export const addProjectMemberHandler = async (req: AuthRequest, res: Response): 
 // ─────────────────────────────────────────
 // DELETE /api/projects/:id/members/:userId
 // ─────────────────────────────────────────
-
 export const removeProjectMemberHandler = async (req: AuthRequest, res: Response): Promise<any> => {
     const { id, userId } = req.params
 
     try {
         const member = await prisma.projectMember.findUnique({
-            where: { userId_projectId: { userId: Number(userId), projectId: Number(id) } }
+            where: { userId_projectId: { userId: Number(userId), projectId: Number(id) } },
+            include: { user: { select: { name: true } } }
         })
         if (!member) return res.status(404).json({ error: 'Member not found in this project' })
 
@@ -304,7 +353,7 @@ export const removeProjectMemberHandler = async (req: AuthRequest, res: Response
             after: null,
             ip: req.ip,
             userAgent: req.headers['user-agent'],
-            note: `Utilizatorul ${member} a fost eliminat din echipa proiectului.`
+            note: `Utilizatorul ${member.user?.name || 'ID #' + userId} a fost eliminat din echipa proiectului.`
         });
 
         return res.status(200).json({ message: 'Member removed from project' })

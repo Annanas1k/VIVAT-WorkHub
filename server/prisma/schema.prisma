@@ -160,7 +160,6 @@ model ProjectMember {
   id        Int      @id @default(autoincrement())
   userId    Int
   projectId Int
-  role      String   @default("member") // rol specific în proiect: lead, member, observer
   joinedAt  DateTime @default(now())
 
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
