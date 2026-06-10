@@ -4,7 +4,7 @@ import { getUsersService, updateRoleService } from '../services/user.service';
 import { useAuth } from '../hooks/useAuth';
 import type { UserData } from '../types/auth.types';
 import { Link } from 'react-router';
-
+import { BeatLoader } from 'react-spinners';
 const roleBadge: Record<string, string> = {
   admin:     'bg-purple-100 text-purple-700',
   manager:   'bg-blue-100 text-blue-700',
@@ -74,11 +74,13 @@ export const TeamPage = () => {
   const initials = (name?: string) =>
     name?.split(' ').map(n => n[0]).join('').toUpperCase() ?? '?';
 
-  if (loading) return (
-    <div className="flex items-center justify-center h-64 text-gray-400 text-sm">
-      {t('team.loading', 'Loading team...')}
-    </div>
-  );
+    if (loading) {
+        return (
+            <div className="w-full min-h-screen flex items-center justify-center">
+                <BeatLoader size={15} color="#4D179A" aria-label="Loading spinner" loading={loading} />
+            </div>
+        )
+    }
 
   return (
     <div className="p-6">

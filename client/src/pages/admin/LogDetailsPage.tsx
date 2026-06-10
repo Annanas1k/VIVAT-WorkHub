@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 import { Link } from 'react-router';
 import { adminGetLogByIdLog } from "../../services/admin.service"
 import type { DetailedActivityLog } from '../../types/logs.types';
-
+import { BeatLoader } from 'react-spinners';
 export const LogDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   
@@ -26,8 +26,14 @@ console.log(log)
     if (id) fetchDetails();
   }, [id]);
 
-  if (loading) return <div className="p-4 font-mono text-sm text-gray-500">Loading log details...</div>;
-  if (!log) return <div className="p-4 font-mono text-sm text-red-400">Log not found.</div>;
+    if (loading) {
+        return (
+            <div className="w-full min-h-screen flex items-center justify-center">
+                <BeatLoader size={15} color="#4D179A" aria-label="Loading spinner" loading={loading} />
+            </div>
+        )
+    }
+    if (!log) return <div className="p-4 font-mono text-sm text-red-400">Log not found.</div>;
 
   return (
     <section className="p-4 text-gray-300 font-mono text-sm">

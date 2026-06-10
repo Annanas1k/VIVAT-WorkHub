@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react"
-import { useTranslation } from "react-i18next"
 import { Link } from "react-router"
 import type { ActivityLog } from "../../types/logs.types"
 import { adminGetAllLogs } from "../../services/admin.service"
-
+import { BeatLoader } from "react-spinners"
 export const LogsPage = () => {
-    const {t} = useTranslation()
     const [logs, setLogs] = useState<ActivityLog[]>([])
     const [loading, setLoading] = useState<boolean>(true)
 
@@ -28,14 +26,13 @@ export const LogsPage = () => {
 
 
 
-  if (loading) return (
-    <div className="flex items-center justify-center py-20 bg-gray-950 min-h-screen">
-      <div className="text-center">
-        <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-400 text-sm font-medium">{t('admin.loading', 'Loading logs data...')}</p>
-      </div>
-    </div>
-  );
+    if (loading) {
+        return (
+            <div className="w-full min-h-screen flex items-center justify-center">
+                <BeatLoader size={15} color="#4D179A" aria-label="Loading spinner" loading={loading} />
+            </div>
+        )
+    }
 
   return(
     <section className="p-1 text-gray-300 font-mono text-sm">

@@ -16,6 +16,7 @@ import { AdminCustomersPage } from '../pages/admin/AdminCustomersPage';
 import { AdminProjectsPage }  from '../pages/admin/AdminProjectsPage';
 import { AdminTasksPage }     from '../pages/admin/AdminTasksPage';
 import { CustomerPage } from '../pages/CustomerPage';
+import { ProjectPage } from '../pages/ProjectPage';
 
 const PrivateRoute = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
@@ -46,6 +47,7 @@ export const AppRouter = () => {
         }>
           <Route path='/profile/:id' element={<ProfilePage />} />
           <Route path='/dashboard'   element={<DashBoardPage />} />
+          <Route path='/projects' element={<ProjectPage />} />
           <Route path='/team'        element={<TeamPage />} />
           <Route path='/customers'   element={<CustomerPage />} />
           <Route path='/customers/:id' element={<CustomerPage />} />

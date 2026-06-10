@@ -75,7 +75,10 @@
     "loading": "Loading data...",
     "title": "System Users Management",
     "users_count": "listed users",
-    "btn_add": "Add New User",
+    "btn_add_user": "Add New User",
+    "btn_add_customer": "Add new Customer",
+    "btn_add_project": "Add New Project",
+    "btn_add_task": "Add New Task",
     "confirm_delete": "Are you sure you want to delete this user?",
     "error_delete": "Error deleting user",
     "error_save": "Operation failed"
@@ -110,5 +113,18 @@
     "completed": "completed",
     "pending": "pending",
     "archived": "archived"
+  },
+  "projects": {
+    "board_title": "Project Board",
+    "board_subtitle": "Internal operations & client distribution",
+    "add_btn": "New Project",
+    "empty_column": "No projects",
+    "status": {
+      "active": "Active",
+      "on_hold": "On Hold",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    }
   }
+
 }

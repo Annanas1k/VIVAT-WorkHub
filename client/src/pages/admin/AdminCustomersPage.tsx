@@ -10,7 +10,7 @@ import {
 } from '../../services/admin.service';
 import type { CustomerData } from '../../types/admin.types';
 import { CustomerModal } from '../../components/customers/CustomerModal';
-
+import { BeatLoader } from 'react-spinners';
 const typeBadge: Record<string, string> = {
   individual: 'bg-sky-100 text-sky-700',
   company:    'bg-amber-100 text-amber-700',
@@ -103,11 +103,13 @@ export const AdminCustomersPage = () => {
     }
   };
 
-  if (loading) return (
-    <div className="flex items-center justify-center h-64 text-gray-400 text-sm">
-      {t('admin.loading', 'Loading...')}
-    </div>
-  );
+    if (loading) {
+        return (
+            <div className="w-full min-h-screen flex items-center justify-center">
+                <BeatLoader size={15} color="#4D179A" aria-label="Loading spinner" loading={loading} />
+            </div>
+        )
+    }
 
   return (
     <div className="p-1">
@@ -127,7 +129,7 @@ export const AdminCustomersPage = () => {
           className="flex items-center gap-2 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-medium transition-colors"
         >
           <MdPersonAdd size={16} />
-          <span className="hidden sm:inline">{t('admin.btn_add', 'Add Customer')}</span>
+          <span className="hidden sm:inline">{t('admin.btn_add_customer', 'Add Customer')}</span>
         </button>
       </div>
 
