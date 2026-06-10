@@ -17,6 +17,11 @@ export const getAllProjects = async (): Promise<Project[]> => {
   const res = await axios.get(`${API_URL}/projects`, getAuthHeaders());
   return res.data.projects;
 };
+
+export const getProjectById = async (id: number | string): Promise<Project> => {
+  const res = await axios.get(`${API_URL}/projects/${id}`, getAuthHeaders());
+  return res.data.project;
+};
  
 export const createProject = async (data: Partial<Project>): Promise<Project> => {
   const res = await axios.post(`${API_URL}/projects`, data, getAuthHeaders());

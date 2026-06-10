@@ -16,7 +16,11 @@ import { AdminCustomersPage } from '../pages/admin/AdminCustomersPage';
 import { AdminProjectsPage }  from '../pages/admin/AdminProjectsPage';
 import { AdminTasksPage }     from '../pages/admin/AdminTasksPage';
 import { CustomerPage } from '../pages/CustomerPage';
-import { ProjectPage } from '../pages/ProjectPage';
+import { ProjectPage } from '../pages/projects/ProjectPage';
+import { ProjectDetailPage } from '../pages/projects/ProjectDetailPage';
+import { ProjectDetailOverview } from '../pages/projects/ProjectDetailOverview';
+import { AddProjectPage } from '../pages/projects/AddProjectPage';
+import { ProjectTasksPage } from '../pages/projects/ProjectTaskPage';
 
 const PrivateRoute = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
@@ -47,7 +51,14 @@ export const AppRouter = () => {
         }>
           <Route path='/profile/:id' element={<ProfilePage />} />
           <Route path='/dashboard'   element={<DashBoardPage />} />
-          <Route path='/projects' element={<ProjectPage />} />
+          <Route path="/projects">
+            <Route index element={<ProjectPage />} />
+            <Route path='add' element={<AddProjectPage />} />
+            <Route path=":id" element={<ProjectDetailPage />}>
+              <Route index path='overview' element={<ProjectDetailOverview />} /> 
+              <Route path='tasks' element={<ProjectTasksPage/>} />
+            </Route>
+          </Route>
           <Route path='/team'        element={<TeamPage />} />
           <Route path='/customers'   element={<CustomerPage />} />
           <Route path='/customers/:id' element={<CustomerPage />} />

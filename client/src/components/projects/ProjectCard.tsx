@@ -21,7 +21,7 @@ export const ProjectCard = memo(({ project, isDragging, canDrag }: Props) => (
   >
     <div className="flex flex-col gap-0.5">
       <Link
-        to={`/projects/${project.id}`}
+        to={`/projects/${project.id}/overview`}
         className="text-sm font-semibold text-gray-900 line-clamp-1 hover:text-indigo-600 hover:underline"
       >
         {project.name}

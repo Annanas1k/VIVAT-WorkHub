@@ -36,7 +36,7 @@ console.log(log)
     if (!log) return <div className="p-4 font-mono text-sm text-red-400">Log not found.</div>;
 
   return (
-    <section className="p-4 text-gray-300 font-mono text-sm">
+    <section className="p-6 text-gray-300 font-mono text-sm">
       {/* Navigare Înapoi */}
       <div className="mb-6">
         <Link to="/admin/logs" className="text-indigo-500 hover:underline">

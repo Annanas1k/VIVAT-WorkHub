@@ -1,12 +1,13 @@
 import { useTranslation } from "react-i18next";
-import { useAuth } from "../hooks/useAuth";
-import type { Project, ProjectStatus } from '../types/project.types';
+import { useAuth } from "../../hooks/useAuth";
+import type { Project, ProjectStatus } from '../../types/project.types';
 import { useEffect, useState, useMemo } from "react";
-import { getAllProjects, updateProject } from "../services/project.service";
+import { getAllProjects, updateProject } from "../../services/project.service";
 import { DragDropContext, type DropResult } from '@hello-pangea/dnd';
 import { MdFolderSpecial, MdAdd } from "react-icons/md";
-import { ProjectColumn } from "../components/projects/ProjectColumn";
+import { ProjectColumn } from "../../components/projects/ProjectColumn";
 import { BeatLoader } from "react-spinners";
+import { Link } from "react-router";
 const COLUMNS: { id: ProjectStatus; titleKey: string; color: string }[] = [
   { id: 'active',    titleKey: 'projects.status.active',    color: 'border-t-emerald-500' },
   { id: 'on_hold',   titleKey: 'projects.status.on_hold',   color: 'border-t-amber-500'   },
@@ -87,10 +88,10 @@ export const ProjectPage = () => {
         </div>
 
         {canManage && (
-          <button className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors">
+          <Link to={'/projects/add'} className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors">
             <MdAdd size={16} />
             {t('projects.add_btn', 'New Project')}
-          </button>
+          </Link>
         )}
       </div>
 

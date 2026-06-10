@@ -31,9 +31,12 @@ export const Sidebar = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
 
-  const [isAdminOpen, setIsAdminOpen]   = useState(false);
-  const [isCollapsed, setIsCollapsed]   = useState(false);
-  const [mobileOpen, setMobileOpen]     = useState(false);
+  const [isAdminOpen, setIsAdminOpen]   = useState<boolean>(false);
+  const [isCollapsed, setIsCollapsed]   = useState<boolean>(()=>{
+    const saved = localStorage.getItem('sidebar_collapsed')
+    return saved ? JSON.parse(saved) : false;
+  });
+  const [mobileOpen, setMobileOpen]     = useState<boolean>(false);
 
   const getLinkClass = ({ isActive }: { isActive: boolean }) =>
     `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all no-underline
@@ -77,7 +80,11 @@ export const Sidebar = () => {
           </button>
         ) : (
           <button
-            onClick={() => setIsCollapsed(!isCollapsed)}
+            onClick={() => setIsCollapsed((prev)=>{
+              const nextState = !prev
+              localStorage.setItem('sidebar_collapsed', JSON.stringify(nextState))
+              return nextState
+            })}
             className="text-gray-500 hover:text-gray-200 bg-transparent border-0 cursor-pointer p-1 rounded hover:bg-gray-800 transition-colors shrink-0"
           >
             <MdMenuOpen size={20} className={`transition-transform duration-300 ${isCollapsed ? 'rotate-180 text-indigo-400' : ''}`} />

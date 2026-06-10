@@ -35,7 +35,7 @@ export const LogsPage = () => {
     }
 
   return(
-    <section className="p-1 text-gray-300 font-mono text-sm">
+    <section className="p-6 text-gray-300 font-mono text-sm">
     <ul className="w-full  divide-gray-800">
       {logs.map((l) => (
         <li key={l.id} className="hover:bg-gray-900/30 transition-colors underline">

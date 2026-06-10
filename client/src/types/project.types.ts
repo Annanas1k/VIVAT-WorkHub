@@ -22,10 +22,14 @@ export interface Project {
     name: string;
     status: ProjectStatus;
     description?: string | null;
+    budget?: number;
     startDate?: Date | string;
     dueDate?: Date | string;
 
     customerId?: number;
+    customer: {
+        name: string;
+    }
 
     createdById?: number;
     createdAt: Date | string;
