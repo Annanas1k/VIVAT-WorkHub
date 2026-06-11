@@ -227,7 +227,7 @@ export const TaskModal = ({ projectId, task, showProjectSelect, onSaved, onDelet
                         : m.user.name?.charAt(0)
                       }
                     </div>
-                    <span className="text-xs text-gray-700 flex-1">{m.user.name}</span>
+                    <span className="text-xs text-gray-700 flex-1">{m.user.name} <span className='bg-violet-200 rounded p-1'>{m.user.role}</span></span>
                     {selected && (
                       <div className="w-4 h-4 rounded-full bg-indigo-600 flex items-center justify-center shrink-0">
                         <span className="text-white text-[9px]">✓</span>

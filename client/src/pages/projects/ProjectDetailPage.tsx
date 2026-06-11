@@ -78,9 +78,9 @@ export const ProjectDetailPage = () => {
   const currentStatus = STATUS_OPTIONS.find(s => s.value === project.status)!;
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen ">
 
-      <div className="px-6 pt-5 pb-0 border-b border-gray-100">
+      <div className="sticky top-0 z-10 w-full  px-6 pt-5 pb-0 border-b bg-white border-gray-100">
 
         <div className="flex items-start justify-between mb-3">
 
@@ -204,7 +204,7 @@ export const ProjectDetailPage = () => {
 
       </div>
 
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-">
         <Outlet />
       </div>
 

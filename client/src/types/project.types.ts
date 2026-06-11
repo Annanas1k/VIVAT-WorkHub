@@ -1,3 +1,5 @@
+import type { Task } from "./task.types";
+
 export type ProjectStatus = 'active' | 'on_hold' | 'completed' | 'cancelled';
 
 
@@ -13,6 +15,7 @@ export interface ProjectMemberWithUser extends ProjectMember {
         id: number;
         name: string;
         email: string;
+        role: string;
         avatar: string | null;
     }
 }
@@ -32,9 +35,10 @@ export interface Project {
         type: string
     }
 
+    tasks: Task[];
     createdById?: number;
     createdAt: Date | string;
-    updatedAd: Date | string;
+    updatedAt: Date | string;
 
 
 

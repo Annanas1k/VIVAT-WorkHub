@@ -124,6 +124,26 @@
       "on_hold": "On Hold",
       "completed": "Completed",
       "cancelled": "Cancelled"
+    },
+    "overview": {
+      "title": "Project Details",
+      "customer": "Customer",
+      "startDate": "Start Date",
+      "dueDate": "Due Date",
+      "budget": "Budget",
+      "description": "Description",
+      "updatedAt": "Last Updated",
+      "total_tasks": "Total Tasks",
+      "days": "days",
+      "allocated_budget": "Alocated bugget",
+      "high_priority": "Urgent Tasks",
+      "urgent_tasks": "high priority",
+      "total_members": "Total Members",
+      "now_active": "active now",
+      "task_count": "Days Remaining",
+      "task_done": "task done",
+      "bodget": "Budget"
+      
     }
   }
 
