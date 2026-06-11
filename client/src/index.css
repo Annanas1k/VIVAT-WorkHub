@@ -1,1 +1,4 @@
 @import "tailwindcss";
+.wx-theme {
+  height: 100%;
+}

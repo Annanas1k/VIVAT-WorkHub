@@ -8,7 +8,8 @@ import {
 
     getProjectMembersHandler,
     addProjectMemberHandler,
-    removeProjectMemberHandler
+    removeProjectMemberHandler,
+    getProjectTasksHandler
 } from '../controllers/project.controller';
 import { authMiddleware } from '../middleware/auth.middleware';
 
@@ -27,5 +28,7 @@ router.delete('/:id', deleteProjectHandler)                         // DELETE   
 router.get('/:id/members', getProjectMembersHandler)                // GET      /api/projects/:id/members
 router.post('/:id/members', addProjectMemberHandler)                // POST     /api/projects/:id/members
 router.delete('/:id/members/:userId', removeProjectMemberHandler)   // DELETE   /api/projects/:id/members/:userId
+
+router.get('/:id/tasks', getProjectTasksHandler)                    // GET      /api/projects/:id/tasks
 
 export default router

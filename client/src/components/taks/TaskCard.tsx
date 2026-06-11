@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { MdCalendarToday } from 'react-icons/md';
 import type { Task } from '../../types/task.types';
+import { Link } from 'react-router';
 
 const PRIORITY_BADGE: Record<string, string> = {
   low:    'bg-gray-100 text-gray-500',
@@ -19,7 +20,7 @@ export const TaskCard = memo(({ task, isDragging, onClick }: Props) => (
     }`}
   >
     <div className="flex items-start justify-between gap-2">
-      <p className="text-xs font-semibold text-gray-900 line-clamp-2 leading-snug">{task.title}</p>
+      <Link to={`/tasks/${task.id}`} className="text-xs font-semibold text-gray-900 line-clamp-2 leading-snug hover:text-purple-900 hover:underline">{task.title}</Link>
       <span className={`shrink-0 text-[10px] font-medium px-1.5 py-0.5 rounded-full ${PRIORITY_BADGE[task.priority] ?? PRIORITY_BADGE.medium}`}>
         {task.priority}
       </span>

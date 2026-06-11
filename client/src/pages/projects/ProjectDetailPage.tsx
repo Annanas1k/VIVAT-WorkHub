@@ -6,6 +6,7 @@ import { getProjectById, updateProject } from '../../services/project.service';
 import { BeatLoader } from 'react-spinners';
 import { MdPersonAdd } from 'react-icons/md';
 import { ProjectMembersPanel } from '../../components/projects/ProjectsMemberPanel';
+import { HiBuildingOffice, HiUser } from "react-icons/hi2";
 const TABS = [
   { to: 'overview',      label: 'Overview'      },
   { to: 'tasks',         label: 'Tasks'         },
@@ -89,12 +90,19 @@ export const ProjectDetailPage = () => {
             <div className="flex items-center gap-2">
               <div className='flex flex-col items-start'>
               <h1 className="text-base font-bold text-gray-900">{project.name}</h1>
-                          {project.customerId && (
-              <p className="text-xs text-gray-400">{project.customer.name}</p>
-            )}
+              {project.customerId && project.customer && (
+                <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                  {project.customer.type === 'company' ? (
+                    <HiBuildingOffice className="w-3.5 h-3.5 shrink-0 text-gray-500" title="Company" />
+                  ) : (
+                    <HiUser className="w-3.5 h-3.5 shrink-0 text-gray-500" title="Individual" />
+                  )}
+                  <span className="truncate">{project.customer.name}</span>
+                </div>
+              )}
               </div>
               
-              <div className="relative mb-3" ref={dropdownRef}>
+              <div className="relative mb-5" ref={dropdownRef}>
                 <button
                   onClick={() => setStatusOpen(o => !o)}
                   disabled={updatingStatus}
@@ -122,6 +130,7 @@ export const ProjectDetailPage = () => {
                 )}
                 
               </div>
+              <button className='text-gray-200' >edit(future)</button>
             </div>
 
           </div>

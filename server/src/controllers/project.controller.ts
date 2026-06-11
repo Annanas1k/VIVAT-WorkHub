@@ -146,6 +146,7 @@ export const updateProjectHandler = async (req: AuthRequest, res: Response): Pro
     try {
         const project = await prisma.project.findUnique({ where: { id: Number(id) } })
         if (!project) return res.status(404).json({ error: 'Project not found' })
+        const beforeroject = {...project}
 
         if (customerId) {
             const customer = await prisma.customer.findUnique({ where: { id: Number(customerId) } })
@@ -180,7 +181,7 @@ export const updateProjectHandler = async (req: AuthRequest, res: Response): Pro
             action: 'updated',
             entityType: 'Project',
             entityId: updated.id,
-            before: null,
+            before: beforeroject,
             after: updated,
             ip: req.ip,
             userAgent: req.headers['user-agent'],
@@ -254,7 +255,8 @@ export const getProjectMembersHandler = async (req: AuthRequest, res: Response):
                         id: true,
                         name: true,
                         email: true,
-                        role: true
+                        role: true,
+                        avatar: true
                     }
                 }
             },
@@ -359,6 +361,38 @@ export const removeProjectMemberHandler = async (req: AuthRequest, res: Response
         return res.status(200).json({ message: 'Member removed from project' })
     } catch (error) {
         console.error('removeProjectMember error:', error)
+        return res.status(500).json({ error: 'server error' })
+    }
+}
+
+
+
+// ─────────────────────────────────────────
+// GET /api/projects/:id/tasks
+// ─────────────────────────────────────────
+export const getProjectTasksHandler = async (req: AuthRequest, res: Response): Promise<any> => {
+    const { id } = req.params
+
+    try {
+        const project = await prisma.project.findUnique({ where: { id: Number(id) } })
+        if (!project) return res.status(404).json({ error: 'Project not found' })
+
+        const tasks = await prisma.task.findMany({
+            where: { projectId: Number(id) },
+            include: {
+                createdBy: { select: { id: true, name: true, avatar: true } },
+                assignees: {
+                    include: {
+                        user: { select: { id: true, name: true, avatar: true } }
+                    }
+                }
+            },
+            orderBy: { createdAt: 'desc' }
+        })
+
+        return res.status(200).json({ tasks })
+    } catch (error) {
+        console.error('getProjectTasks error:', error)
         return res.status(500).json({ error: 'server error' })
     }
 }

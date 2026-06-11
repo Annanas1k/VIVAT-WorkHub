@@ -123,6 +123,7 @@ export const updateCustomerHandler = async (req: AuthRequest, res: Response): Pr
     try {
         const customer = await prisma.customer.findUnique({where: { id: Number(id)}})
         if(!customer) return res.status(404).json({error: 'Customer not found'})
+        const beforeCustomer = {...customer}
 
         const updateData: any = {};
         if (type !== undefined) updateData.type = type;
@@ -161,7 +162,7 @@ export const updateCustomerHandler = async (req: AuthRequest, res: Response): Pr
             action: 'updated',
             entityType: 'Customer',
             entityId: updated.id,
-            before: null,
+            before: beforeCustomer,
             after: updated,
             ip: req.ip,
             userAgent: req.headers['user-agent'],
@@ -186,7 +187,7 @@ export const deleteCustomerHandler = async (req: AuthRequest, res: Response): Pr
     try{
         const customer = await prisma.customer.findUnique({where: {id: Number(id)}})
         if(!customer) return res.status(404).json({error: 'Customer not found'})
-        
+
         await prisma.customer.delete({where: {id: Number(id)}})
 
         await logActivity({

@@ -21,6 +21,7 @@ import { ProjectDetailPage } from '../pages/projects/ProjectDetailPage';
 import { ProjectDetailOverview } from '../pages/projects/ProjectDetailOverview';
 import { AddProjectPage } from '../pages/projects/AddProjectPage';
 import { ProjectTasksPage } from '../pages/projects/ProjectTaskPage';
+import { ProjectBoardPage } from '../pages/projects/ProjectBoardPage';
 
 const PrivateRoute = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
@@ -57,6 +58,7 @@ export const AppRouter = () => {
             <Route path=":id" element={<ProjectDetailPage />}>
               <Route index path='overview' element={<ProjectDetailOverview />} /> 
               <Route path='tasks' element={<ProjectTasksPage/>} />
+              <Route path='board' element={<ProjectBoardPage />} />
             </Route>
           </Route>
           <Route path='/team'        element={<TeamPage />} />

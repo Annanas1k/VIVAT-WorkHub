@@ -29,6 +29,7 @@ export interface Project {
     customerId?: number;
     customer: {
         name: string;
+        type: string
     }
 
     createdById?: number;

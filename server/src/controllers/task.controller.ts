@@ -85,11 +85,7 @@ export const createTaskHandler = async (req: AuthRequest, res: Response): Promis
                 projectId: projectId ? Number(projectId) : undefined,
                 createdById: Number(userId),
                 assignees: assigneeIds?.length
-                    ? {
-                        create: assigneeIds.map((uid: number) => ({
-                            userId: Number(uid)
-                        }))
-                    }
+                    ? { create: assigneeIds.map((uid: number) => ({ userId: Number(uid) })) }
                     : undefined
             },
             include: {
@@ -126,14 +122,14 @@ export const createTaskHandler = async (req: AuthRequest, res: Response): Promis
 // ─────────────────────────────────────────
 // PATCH /api/tasks/:id
 // ─────────────────────────────────────────
-
 export const updateTaskHandler = async (req: AuthRequest, res: Response): Promise<any> => {
     const { id } = req.params
-    const { title, description, status, priority, dueDate, projectId } = req.body
+    const { title, description, status, priority, dueDate, projectId, assigneeIds } = req.body
 
     try {
         const task = await prisma.task.findUnique({ where: { id: Number(id) } })
         if (!task) return res.status(404).json({ error: 'Task not found' })
+            const beforeTask = {...task}
 
         if (projectId) {
             const project = await prisma.project.findUnique({ where: { id: Number(projectId) } })
@@ -148,12 +144,19 @@ export const updateTaskHandler = async (req: AuthRequest, res: Response): Promis
         if (dueDate !== undefined) updateData.dueDate = dueDate ? new Date(dueDate) : null
         if (projectId !== undefined) updateData.projectId = projectId ? Number(projectId) : null
 
+        if (assigneeIds !== undefined) {
+            updateData.assignees = {
+                deleteMany: {},
+                create: assigneeIds.map((uid: number) => ({ userId: Number(uid) }))
+            }
+        }
+
         const updated = await prisma.task.update({
             where: { id: Number(id) },
             data: updateData,
             include: {
                 createdBy: { select: { id: true, name: true, avatar: true } },
-                project: { select: { id: true, name: true } },
+                project:   { select: { id: true, name: true } },
                 assignees: {
                     include: {
                         user: { select: { id: true, name: true, avatar: true } }
@@ -167,7 +170,7 @@ export const updateTaskHandler = async (req: AuthRequest, res: Response): Promis
             action: 'updated',
             entityType: 'Task',
             entityId: updated.id,
-            before: null,
+            before: beforeTask,
             after: updated,
             ip: req.ip,
             userAgent: req.headers['user-agent'],
@@ -180,7 +183,6 @@ export const updateTaskHandler = async (req: AuthRequest, res: Response): Promis
         return res.status(500).json({ error: 'server error' })
     }
 }
-
 // ─────────────────────────────────────────
 // DELETE /api/tasks/:id
 // ─────────────────────────────────────────

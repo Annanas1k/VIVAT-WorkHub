@@ -32,7 +32,10 @@ export const createTask = async (data: Partial<Task> & { projectId?: number; ass
   return res.data.task;
 };
 
-export const updateTask = async (id: number, data: Partial<Task>): Promise<Task> => {
+export const updateTask = async (
+  id: number,
+  data: Partial<Task> & { assigneeIds?: number[] }
+): Promise<Task> => {
   const res = await axios.patch(`${API_URL}/tasks/${id}`, data, getAuthHeaders());
   return res.data.task;
 };
