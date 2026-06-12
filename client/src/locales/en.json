@@ -145,6 +145,25 @@
       "bodget": "Budget"
       
     }
+  },
+  "tasks": {
+    "tasks": "tasks",
+    "total_count": "total tasks",
+    "unassigned": "Unassigned",
+    "no_tasks_found": "No tasks found matching the selected filters.",
+    "search_placeholder": "Search task...",
+    "filter": {
+      "my_tasks": "Only my tasks",
+      "all_statuses": "All Statuses",
+      "all_priorities": "All Priorities"
+    },
+    "table": {
+      "taskName": "Task Name",
+      "assignee": "Assignee",
+      "dueDate": "Due Date",
+      "priority": "Priority",
+      "status": "Status"
+    }
   }
 
 }

@@ -1,3 +1,5 @@
+import type { UserData } from "./auth.types";
+
 export type TaskStatus   = 'backlog' | 'todo' | 'in_progress' | 'review' | 'done';
 export type TaskPriority = 'low' | 'medium' | 'high' | 'urgent';
 
@@ -13,7 +15,14 @@ export interface Task {
   status:      TaskStatus;
   priority:    TaskPriority;
   dueDate?:    Date | string;
+  createdById?: number | null;
+  createdBy?: UserData;
   projectId?:  number;
+  project?: {
+    id: number;
+    name: string;
+  }
   assignees?:  TaskAssignee[];
   createdAt:   Date | string;
+  updatedAt?: Date | string;
 }

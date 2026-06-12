@@ -15,7 +15,7 @@ interface DetailCardProps {
 export const DetailsCard = ({ projectData }: DetailCardProps) => {
   const { t } = useTranslation();
 
-  const formatDate = (date: any) => {
+  const formatDate = (date) => {
     if (!date) return "—";
     return new Date(date).toLocaleDateString('ro-RO', { day: 'numeric', month: 'short', year: 'numeric' });
   };
@@ -33,7 +33,7 @@ export const DetailsCard = ({ projectData }: DetailCardProps) => {
             <HiOutlineUser className="w-4 h-4 text-slate-400" />
             {t("projects.overview.customer")}
           </span>
-          <span className="text-slate-800 font-semibold text-right break-words max-w-[70%]">
+          <span className="text-slate-800 font-semibold text-right wrap-break-words max-w-[70%]">
             {projectData.customer?.name || "—"}
           </span>
         </div>

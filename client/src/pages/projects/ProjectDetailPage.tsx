@@ -11,8 +11,8 @@ const TABS = [
   { to: 'overview',      label: 'Overview'      },
   { to: 'tasks',         label: 'Tasks'         },
   { to: 'board',         label: 'Board'    },
-  { to: 'timesheets',    label: 'Timesheets'    },
-  { to: 'finance',       label: 'Finance'       },
+  // { to: 'timesheets',    label: 'Timesheets'    },
+  // { to: 'finance',       label: 'Finance'       },
   { to: 'files',         label: 'Files'         },
   { to: 'discussions',   label: 'Discussions'   },
   { to: 'activity-feed', label: 'Activity Feed' },
@@ -204,7 +204,7 @@ export const ProjectDetailPage = () => {
 
       </div>
 
-      <div className="flex-1 p-">
+      <div className="flex-1 p-6 ">
         <Outlet />
       </div>
 
