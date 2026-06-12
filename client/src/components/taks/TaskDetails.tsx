@@ -17,11 +17,13 @@ interface TaskDetailsProps {
   projectId?: number | null;
   updatedAt?: Date | string;
   createdById?: number | null;
-  createdBy?: UserData | null; // Permitem și null conform modelului Prisma
+  createdBy?: UserData | null;
   project?: {
     id: number;
     name: string;
   } | null;
+  // 1. Adăugăm funcția de callback în props pentru a trimite valoarea nouă în pagină
+  onStatusChange: (newStatus: string) => void; 
 }
 
 export const TaskDetails = ({ 
@@ -31,7 +33,8 @@ export const TaskDetails = ({
   dueDate, 
   updatedAt, 
   project,
-  createdBy
+  createdBy,
+  onStatusChange // Destructurăm noua funcție
 }: TaskDetailsProps) => {
   const { t } = useTranslation();
 
@@ -44,18 +47,16 @@ export const TaskDetails = ({
     });
   };
 
-  // Generare inițiale pentru cazul în care lipsește avatarul
   const initials = createdBy?.name
     ? createdBy.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
     : "??";
 
-  // Mapare stiluri pentru Statusuri și Priorități
   const statusStyles: Record<string, string> = {
-    backlog: "bg-slate-100 text-slate-600 border-slate-200",
-    todo: "bg-blue-50 text-blue-600 border-blue-100",
-    in_progress: "bg-indigo-50 text-indigo-600 border-indigo-100",
-    review: "bg-purple-50 text-purple-600 border-purple-100",
-    done: "bg-emerald-50 text-emerald-600 border-emerald-100",
+    backlog: "bg-slate-100 text-slate-600 border-slate-200 focus:ring-slate-200",
+    todo: "bg-blue-50 text-blue-600 border-blue-100 focus:ring-blue-200",
+    in_progress: "bg-indigo-50 text-indigo-600 border-indigo-100 focus:ring-indigo-200",
+    review: "bg-purple-50 text-purple-600 border-purple-100 focus:ring-purple-200",
+    done: "bg-emerald-50 text-emerald-600 border-emerald-100 focus:ring-emerald-200",
   };
 
   const priorityStyles: Record<string, string> = {
@@ -66,23 +67,33 @@ export const TaskDetails = ({
   };
 
   return (
-    <div className="w-full rounded-xl  p-5  text-slate-800">
+    <div className="w-full rounded-xl p-5 text-slate-800">
       <h3 className="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-5">
         {t("tasks.details.sidebar.title", "DETAILS")}
       </h3>
 
       <div className="flex flex-col gap-4">
-        {/* Status */}
+        {/* Status Dropdown */}
         <div className="flex items-center justify-between gap-4 text-sm">
           <span className="text-slate-700 flex items-center gap-2 font-medium shrink-0">
             <HiOutlineSquares2X2 className="w-4 h-4 text-slate-700" />
             {t("tasks.details.status", "Status")}
           </span>
-          <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium border capitalize ${
-            statusStyles[status] || "bg-slate-100"
-          }`}>
-            {status?.replace("_", " ")}
-          </span>
+          
+          {/* 2. Înlocuit span-ul cu un select interactiv */}
+          <select
+            value={status}
+            onChange={(e) => onStatusChange(e.target.value)}
+            className={`px-2.5 py-1 rounded-full text-xs font-medium border capitalize cursor-pointer focus:outline-none focus:ring-2 transition-all appearance-none text-center ${
+              statusStyles[status] || "bg-slate-100"
+            }`}
+          >
+            <option value="backlog" className="text-slate-800 bg-white">{t("status.backlog", "Backlog")}</option>
+            <option value="todo" className="text-slate-800 bg-white">{t("status.todo", "To Do")}</option>
+            <option value="in_progress" className="text-slate-800 bg-white">{t("status.in_progress", "In Progress")}</option>
+            <option value="review" className="text-slate-800 bg-white">{t("status.review", "Review")}</option>
+            <option value="done" className="text-slate-800 bg-white">{t("status.done", "Done")}</option>
+          </select>
         </div>
         <hr className="border-slate-100" />
 
@@ -124,7 +135,7 @@ export const TaskDetails = ({
         </div>
         <hr className="border-slate-100" />
 
-        {/* Secțiunea: Creat de (Nume, Avatar, Rol) */}
+        {/* Secțiunea: Creat de */}
         <div className="flex items-start justify-between gap-4 text-sm">
           <span className="text-slate-700 flex items-center gap-2 font-medium shrink-0 pt-1">
             <HiOutlineUser className="w-4 h-4 text-slate-700" />

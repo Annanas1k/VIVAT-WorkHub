@@ -2,14 +2,14 @@ import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { HiOutlineArrowLeft } from 'react-icons/hi2';
+import type { Task } from '../../types/task.types';
 
 interface TaskHeaderProps {
-  id: number;
-  title: string;
-  description?: string | null;
+  task: Task;
+  onEditClick: (task: Task) => void;
 }
 
-export const TaskHeader = ({ id, title, description }: TaskHeaderProps) => {
+export const TaskHeader = ({ task, onEditClick }: TaskHeaderProps) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -29,22 +29,29 @@ export const TaskHeader = ({ id, title, description }: TaskHeaderProps) => {
           <HiOutlineArrowLeft className="w-3.5 h-3.5" />
           {t('tasks.details.header.back', 'Înapoi')}
         </button>
-
-        <span className="text-xs font-mono font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-2.5 py-1 rounded-md">
-          #task-{id}
+        <div className='flex gap-2'>
+        <span className="text-xs text-center font-mono font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-2.5 py-1 rounded-md">
+          #task-{task?.id}
         </span>
+        <button
+          onClick={() => onEditClick(task)}
+          className="flex items-center gap-1.5 px-2  rounded-sm text-sm font-medium border transition-all bg-orange-100 border-orange-200 text-orange-600 shadow-sm cursor-pointer"
+        >
+          {t('tasks.edit', 'Edit')}
+        </button>
+        </div>
       </div>
 
       {/* Titlul și Descrierea Task-ului */}
       <div className="flex flex-col gap-2 max-w-4xl">
         <h1 className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight leading-tight">
-          {title}
+          {task?.title}
         </h1>
         
-        {description ? (<div>
+        {task?.description ? (<div>
           <p className='text-xs mt-4 mb-2 text-gray-400'>{t('description', 'description')}</p>
           <p className="text-sm text-slate-500 leading-relaxed font-medium whitespace-pre-wrap">
-            {description}
+            {task?.description}
           </p>
         </div>
         ) : (

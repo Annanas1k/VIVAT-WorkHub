@@ -65,7 +65,7 @@ export const TasksPage = () => {
     done: "bg-emerald-50 text-emerald-600 border border-emerald-100",
   };
 
-  const formatDate = (dateString: any) => {
+  const formatDate = (dateString) => {
     if (!dateString) return "—";
     return new Date(dateString).toLocaleDateString("ro-RO", {
       day: "numeric",
