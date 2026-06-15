@@ -12,10 +12,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
-
-
 // ─────────────────────────────────────────────────────────────
 // ENUMS
 // ─────────────────────────────────────────────────────────────
@@ -70,6 +66,11 @@ enum log_action {
   unassigned
 }
 
+enum comment_entity_type {
+  project
+  task
+}
+
 // ─────────────────────────────────────────────────────────────
 // MIGRATION 1 — deja existent
 // ─────────────────────────────────────────────────────────────
@@ -87,12 +88,13 @@ model User {
   updatedAt DateTime @updatedAt
 
   // Relații
-  projectMembers  ProjectMember[]  // proiectele la care participă
-  taskAssignees   TaskAssignee[]   // taskurile asignate lui
-  createdProjects Project[]        @relation("ProjectCreatedBy")
-  createdTasks    Task[]           @relation("TaskCreatedBy")
+  projectMembers   ProjectMember[] // proiectele la care participă
+  taskAssignees    TaskAssignee[] // taskurile asignate lui
+  createdProjects  Project[]       @relation("ProjectCreatedBy")
+  createdTasks     Task[]          @relation("TaskCreatedBy")
   createdCustomers Customer[]      @relation("CustomerCreatedBy")
-  logs            ActivityLog[]    @relation("LogPerformedBy")
+  logs             ActivityLog[]   @relation("LogPerformedBy")
+  Comment          Comment[]
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -100,32 +102,32 @@ model User {
 // ─────────────────────────────────────────────────────────────
 
 model Customer {
-  id        Int           @id @default(autoincrement())
-  type      customer_type @default(individual)
+  id   Int           @id @default(autoincrement())
+  type customer_type @default(individual)
 
   // Câmpuri comune
-  name      String
-  email     String?       @unique
-  phone     String?       @unique
-  address   String?
-  notes     String?
+  name    String
+  email   String? @unique
+  phone   String? @unique
+  address String?
+  notes   String?
 
   // Câmpuri specifice persoanei juridice
-  company   String?       // numele firmei dacă type = company
-  vatNumber String?       // CUI / cod fiscal
-  regNumber String?       // număr registrul comerțului
+  company   String? // numele firmei dacă type = company
+  vatNumber String? // CUI / cod fiscal
+  regNumber String? // număr registrul comerțului
 
   // Câmpuri specifice persoanei fizice
   firstName String?
   lastName  String?
 
   createdById Int?
-  createdBy   User?     @relation("CustomerCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdBy   User?    @relation("CustomerCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   // Relații
-  projects  Project[]   // proiectele asociate acestui client
+  projects Project[] // proiectele asociate acestui client
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -142,17 +144,18 @@ model Project {
   budget      Float?
 
   // Relație opțională cu clientul
-  customerId  Int?
-  customer    Customer?      @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  customerId Int?
+  customer   Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
 
   createdById Int?
-  createdBy   User?          @relation("ProjectCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  createdBy   User?    @relation("ProjectCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   // Relații
-  members     ProjectMember[]
-  tasks       Task[]
+  members  ProjectMember[]
+  tasks    Task[]
+  comments Comment[]
 }
 
 // Tabel de legătură User <-> Project (many-to-many cu rol în proiect)
@@ -162,8 +165,8 @@ model ProjectMember {
   projectId Int
   joinedAt  DateTime @default(now())
 
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@unique([userId, projectId]) // un user nu poate fi adăugat de două ori în același proiect
 }
@@ -181,16 +184,16 @@ model Task {
   dueDate     DateTime?
 
   // Relație opțională cu proiectul — task poate fi de sine stătător
-  projectId   Int?
-  project     Project?      @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  projectId Int?
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
 
   createdById Int?
-  createdBy   User?         @relation("TaskCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  createdBy   User?    @relation("TaskCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   // Relații
-  assignees   TaskAssignee[]
+  assignees TaskAssignee[]
 }
 
 // Tabel de legătură User <-> Task (many-to-many)
@@ -200,10 +203,31 @@ model TaskAssignee {
   taskId     Int
   assignedAt DateTime @default(now())
 
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  task       Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
   @@unique([userId, taskId]) // un user nu poate fi asignat de două ori la același task
+}
+
+// ─────────────────────────────────────────────────────────────
+// MIGRATION 6 — Comments
+// ─────────────────────────────────────────────────────────────
+
+model Comment {
+  id      Int    @id @default(autoincrement())
+  content String
+
+  entityType comment_entity_type
+  entityId   Int
+
+  authorId Int
+  author   User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Project   Project? @relation(fields: [projectId], references: [id])
+  projectId Int?
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -211,32 +235,30 @@ model TaskAssignee {
 // ─────────────────────────────────────────────────────────────
 
 model ActivityLog {
-  id           Int        @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
   // Cine a făcut acțiunea
   performedById Int?
-  performedBy   User?     @relation("LogPerformedBy", fields: [performedById], references: [id], onDelete: SetNull)
+  performedBy   User? @relation("LogPerformedBy", fields: [performedById], references: [id], onDelete: SetNull)
 
   // Ce acțiune
-  action        log_action
+  action log_action
 
   // Pe ce entitate (ex: "Project", "Task", "User", "Customer")
-  entityType    String
-  entityId      Int
+  entityType String
+  entityId   Int
 
   // Diff — ce era înainte și ce e după (JSON)
-  before        Json?
-  after         Json?
+  before Json?
+  after  Json?
 
   // Metadata
-  ip            String?
-  userAgent     String?
-  note          String?   // mesaj opțional lizibil pentru oameni
+  ip        String?
+  userAgent String?
+  note      String? // mesaj opțional lizibil pentru oameni
 
-  createdAt     DateTime  @default(now())
+  createdAt DateTime @default(now())
 
   @@index([entityType, entityId]) // căutare rapidă după entitate
-  @@index([performedById])        // căutare rapidă după user
+  @@index([performedById]) // căutare rapidă după user
 }
-
-
