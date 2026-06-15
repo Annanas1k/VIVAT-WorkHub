@@ -2,3 +2,18 @@
 .wx-theme {
   height: 100%;
 }
+
+
+
+/* Forțează SVAR Comments să ocupe întreg spațiul disponibil fără scroll propriu */
+.discussion-panel .wx-comments,
+.discussion-panel [class*="comments"] {
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+/* Scroll-ul rămâne doar pe lista de mesaje internă a SVAR */
+.discussion-panel [class*="list"],
+.discussion-panel [class*="messages"] {
+  overflow-y: auto !important;
+}

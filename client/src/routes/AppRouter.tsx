@@ -24,6 +24,7 @@ import { ProjectTasksPage } from '../pages/projects/ProjectTaskPage';
 import { ProjectBoardPage } from '../pages/projects/ProjectBoardPage';
 import { TasksPage } from '../pages/tasks/TasksPage';
 import { TaskDetailedPage } from '../pages/tasks/TaskDetailedPage';
+import { ProjectDiscussionPage } from '../pages/projects/ProjectDiscutionPage';
 
 const PrivateRoute = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
@@ -61,6 +62,8 @@ export const AppRouter = () => {
               <Route index path='overview' element={<ProjectDetailOverview />} /> 
               <Route path='tasks' element={<ProjectTasksPage/>} />
               <Route path='board' element={<ProjectBoardPage />} />
+
+              <Route path='discussions' element={<ProjectDiscussionPage />} />
             </Route>
           </Route>
           <Route path='/tasks' >
