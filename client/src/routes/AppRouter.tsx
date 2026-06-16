@@ -25,6 +25,8 @@ import { ProjectBoardPage } from '../pages/projects/ProjectBoardPage';
 import { TasksPage } from '../pages/tasks/TasksPage';
 import { TaskDetailedPage } from '../pages/tasks/TaskDetailedPage';
 import { ProjectDiscussionPage } from '../pages/projects/ProjectDiscutionPage';
+import { ProjectFilesPage } from '../components/projects/ProjectFilesPage';
+import { ScrollToTop } from '../components/utils/ScrollToTop';
 
 const PrivateRoute = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
@@ -39,6 +41,7 @@ const PublicRoute = ({ children }: { children: ReactNode }) => {
 export const AppRouter = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path='/' element={<Navigate to='/dashboard' replace />} />
 
@@ -62,7 +65,7 @@ export const AppRouter = () => {
               <Route index path='overview' element={<ProjectDetailOverview />} /> 
               <Route path='tasks' element={<ProjectTasksPage/>} />
               <Route path='board' element={<ProjectBoardPage />} />
-
+              <Route path='files' element={<ProjectFilesPage />} />
               <Route path='discussions' element={<ProjectDiscussionPage />} />
             </Route>
           </Route>
