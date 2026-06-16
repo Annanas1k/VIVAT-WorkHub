@@ -87,7 +87,7 @@ export default function MessageRenderer({
         </div>
 
         {/* Text */}
-        <div className="text-[13px] text-slate-700 leading-relaxed whitespace-pre-wrap break-words">
+        <div className="text-[13px] text-slate-700 leading-relaxed whitespace-pre-wrap wrap-break-words">
           {typeof children === "function" ? children() : children}
         </div>
       </div>

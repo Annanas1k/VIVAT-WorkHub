@@ -12,6 +12,7 @@ const toSvarComment = (c: CommentResponse): SvarComment => ({
   author: {
     id: c.author.id,
     name: c.author.name,
+    avatar: c.author.avatar
   },
 });
 

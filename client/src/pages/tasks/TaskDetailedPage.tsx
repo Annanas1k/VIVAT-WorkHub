@@ -11,8 +11,8 @@ import { TaskAssignees } from "../../components/taks/TaskAssignees";
 import type { UserData } from "../../types/auth.types";
 import { TaskModal } from "../../components/taks/TaskModal";
 import { updateTask } from "../../services/task.service";
-
-
+import { CommentsPanel } from "../../components/comments/CommentPanel";
+import { AttachmentsPanel } from "../../components/attachment/AttachmentsPanel";
 
 type AssigneeWithuser = TaskAssignee & { user: UserData };
 
@@ -75,8 +75,22 @@ export const TaskDetailedPage = () => {
                     <div className="overflow-hidden  rounded-xl border border-slate-200 ">
                         <TaskHeader task={task} onEditClick={openEdit} />
                     </div>
+                    <div className="bg-white rounded-xl border border-slate-200 p-4">
+                        <h3 className="text-sm font-semibold text-slate-700 mb-3">Files</h3>
+                        <AttachmentsPanel
+                            entityType="task"
+                            entityId={task.id}
+                            currentUserId={user?.id}
+                            currentUserRole={user?.role}
+                        />
+                        </div>
 
                     {/* 💡 LOCAȚIE VIITOARE: <TaskComments taskId={task.id} /> */}
+                    <CommentsPanel
+                    entityType="task"
+                    entityId={task.id}
+                    currentUserId={user?.id}
+                    />
                 </div>
 
                 {/* COLOANA DREAPTĂ: Ocupă 1/3 din ecran pe desktop (Sidebar) */}

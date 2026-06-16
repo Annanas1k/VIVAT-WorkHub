@@ -18,7 +18,7 @@ export const TaskHeader = ({ task, onEditClick }: TaskHeaderProps) => {
   }, [navigate]);
 
   return (
-    <div className="w-full px-6 py-5 flex flex-col gap-4  text-slate-800">
+    <div className="w-full bg-white px-6 py-5 flex flex-col gap-4  text-slate-800">
       {/* Rândul de navigare și ID */}
       <div className="flex items-center justify-between w-full">
         <button 

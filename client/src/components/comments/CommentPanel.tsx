@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Willow } from "@svar-ui/react-core";
 import { Comments } from "@svar-ui/react-comments";
+    import "@svar-ui/react-comments/style.css";
 import { BeatLoader } from "react-spinners";
 import {
   fetchComments,
@@ -99,5 +100,6 @@ export function CommentsPanel({
         render={MessageRenderer}
       />
     </Willow>
+    
   );
 }
