@@ -76,6 +76,15 @@ enum attachment_entity_type {
   task
 }
 
+enum notification_type {
+  task_assigned
+  task_unassigned
+  project_member_added
+  project_member_removed
+  task_status_changed
+  comment_added
+}
+
 // ─────────────────────────────────────────────────────────────
 // MIGRATION 1 — deja existent
 // ─────────────────────────────────────────────────────────────
@@ -101,6 +110,7 @@ model User {
   logs             ActivityLog[]   @relation("LogPerformedBy")
   Comment          Comment[]
   attachments      Attachment[]
+  notifications    Notification[]
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -283,4 +293,20 @@ model ActivityLog {
 
   @@index([entityType, entityId]) // căutare rapidă după entitate
   @@index([performedById]) // căutare rapidă după user
+}
+
+
+model Notification {
+  id         Int               @id @default(autoincrement())
+  userId     Int
+  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type       notification_type
+  title      String
+  message    String
+  entityType String?
+  entityId   Int?
+  read       Boolean           @default(false)
+  createdAt  DateTime          @default(now())
+
+  @@index([userId, read])
 }

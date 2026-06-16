@@ -2,7 +2,7 @@ import { Response } from "express"
 import prisma from "../config/prisma"
 import { AuthRequest } from "../middleware/auth.middleware"
 import { logActivity } from "../utils/logger";
-
+import { createNotification } from '../services/notification.service';
 // ─────────────────────────────────────────
 // GET /api/tasks
 // ─────────────────────────────────────────
@@ -309,6 +309,14 @@ export const addTaskAssigneeHandler = async (req: AuthRequest, res: Response): P
             userAgent: req.headers['user-agent'],
             note: `Utilizatorul ${assignee.user.name} a fost asignat la task-ul cu ID-ul ${id}.`
         });
+        await createNotification({
+            userId: Number(userId),
+            type: 'task_assigned',
+            title: 'Adăugat la task',
+            message: `Ai fost adăugat la taskul "${task.title}"`,
+            entityType: 'Project',
+            entityId: task.id,
+        });
 
         return res.status(201).json({ assignee })
     } catch (error) {
@@ -333,6 +341,8 @@ export const removeTaskAssigneeHandler = async (req: AuthRequest, res: Response)
         await prisma.taskAssignee.delete({
             where: { userId_taskId: { userId: Number(userId), taskId: Number(id) } }
         })
+        const task = await prisma.task.findUnique({ where: { id: Number(id) } })
+        if (!task) return res.status(404).json({ error: 'task not found' })
 
         await logActivity({
             performedById: Number(req.user!.userId),
@@ -344,6 +354,14 @@ export const removeTaskAssigneeHandler = async (req: AuthRequest, res: Response)
             ip: req.ip,
             userAgent: req.headers['user-agent'],
             note: `Utilizatorul ${assignee} a fost retras de pe acest task.`
+        });
+        await createNotification({
+            userId: Number(userId),
+            type: 'task_unassigned',
+            title: 'Scos de la task',
+            message: `Ai fost adăugat la taskul "${task.title}"`,
+            entityType: 'Project',
+            entityId: task.id,
         });
 
         return res.status(200).json({ message: 'Assignee removed from task' })

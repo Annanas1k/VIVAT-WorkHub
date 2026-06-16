@@ -2,7 +2,7 @@ import { Response } from "express"
 import prisma from "../config/prisma"
 import { AuthRequest } from "../middleware/auth.middleware"
 import { logActivity } from "../utils/logger";
-
+import { createNotification } from '../services/notification.service';
 // ─────────────────────────────────────────
 // GET /api/projects
 // ─────────────────────────────────────────
@@ -35,7 +35,7 @@ export const getAllProjectsHandler = async (req: AuthRequest, res: Response): Pr
 // ─────────────────────────────────────────
 
 export const getProjectByIdHandler = async (req: AuthRequest, res: Response): Promise<any> => {
-    const { id } = req.params
+    const { id } = req.params;
 
     try {
         const project = await prisma.project.findUnique({
@@ -59,16 +59,34 @@ export const getProjectByIdHandler = async (req: AuthRequest, res: Response): Pr
                     orderBy: { createdAt: 'desc' }
                 }
             }
-        })
+        });
 
-        if (!project) return res.status(404).json({ error: 'Project not found' })
+        // 1. Validăm existența proiectului înainte de a face alte operații
+        if (!project) {
+            return res.status(404).json({ error: 'Project not found' });
+        }
 
-        return res.status(200).json({ project })
+        // 2. Extragem ID-urile tuturor task-urilor din acest proiect
+        const taskIds = project.tasks.map(task => task.id);
+
+        // 3. Numărăm atașamentele proiectului + atașamentele task-urilor sale
+        const fileCount = await prisma.attachment.count({
+            where: {
+                OR: [
+                    { entityType: 'project', entityId: project.id },
+                    { entityType: 'task', entityId: { in: taskIds } }
+                ]
+            }
+        });
+
+        // 4. Returnăm obiectul proiectului și numărul total de fișiere calculat
+        return res.status(200).json({ project, fileCount });
+        
     } catch (error) {
-        console.error('getProjectById error:', error)
-        return res.status(500).json({ error: 'server error' })
+        console.error('getProjectById error:', error);
+        return res.status(500).json({ error: 'server error' });
     }
-}
+};
 
 // ─────────────────────────────────────────
 // POST /api/projects
@@ -322,6 +340,15 @@ export const addProjectMemberHandler = async (req: AuthRequest, res: Response): 
             note: `Utilizatorul ${member.user.name} (${member.user.role}) a fost adăugat în echipa proiectului.`
         });
 
+        await createNotification({
+            userId: Number(userId),
+            type: 'project_member_added',
+            title: 'Adăugat în proiect',
+            message: `Ai fost adăugat în proiectul "${project.name}"`,
+            entityType: 'Project',
+            entityId: project.id,
+        });
+
         return res.status(201).json({ member })
     } catch (error) {
         console.error('addProjectMember error:', error)
@@ -345,6 +372,8 @@ export const removeProjectMemberHandler = async (req: AuthRequest, res: Response
         await prisma.projectMember.delete({
             where: { userId_projectId: { userId: Number(userId), projectId: Number(id) } }
         })
+        const project = await prisma.project.findUnique({ where: { id: Number(id) } })
+        if (!project) return res.status(404).json({ error: 'Project not found' })
 
         await logActivity({
             performedById: Number(req.user!.userId),
@@ -356,6 +385,14 @@ export const removeProjectMemberHandler = async (req: AuthRequest, res: Response
             ip: req.ip,
             userAgent: req.headers['user-agent'],
             note: `Utilizatorul ${member.user?.name || 'ID #' + userId} a fost eliminat din echipa proiectului.`
+        });
+        await createNotification({
+            userId: Number(userId),
+            type: 'project_member_removed',
+            title: 'Eliminat din proiect',
+            message: `Ai fost eliminat din proiectul "${project.name}"`,  // ai nevoie să fetch-uiești project mai sus
+            entityType: 'Project',
+            entityId: Number(id),
         });
 
         return res.status(200).json({ message: 'Member removed from project' })
