@@ -35,13 +35,16 @@ export const ProjectDetailPage = () => {
   const [memberModalOpen, setMemberModalOpen] = useState(false);
   const dropdownRef                     = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+useEffect(() => {
     getProjectById(id)
-      .then(setProject)
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, [id]);
-
+        .then((res) => {
+            if (res) {
+                setProject(res.project);
+            }
+        })
+        .catch(console.error)
+        .finally(() => setLoading(false));
+}, [id]);
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {

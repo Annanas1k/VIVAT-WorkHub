@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router';
 import { useAuth } from '../../hooks/useAuth';
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { useTranslation } from 'react-i18next';
+import NotificationBell from '../notification/NotificationBell';
 
 const pageTitles: Record<string, string> = {
   '/dashboard':      'sidebar.dashboard',
@@ -36,6 +37,7 @@ export const Topbar = () => {
 
       {/* User info + logout */}
       <div className="flex items-center gap-3">
+        <NotificationBell />
         <div className="text-right hidden sm:block">
           <Link to={`/profile/${user?.id}`} className="text-sm font-medium text-gray-900 leading-none">
             {user?.name}

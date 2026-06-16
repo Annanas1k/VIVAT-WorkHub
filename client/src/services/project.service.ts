@@ -7,7 +7,10 @@ const getAuthHeaders = () => {
   return { headers: { Authorization: `Bearer ${token}` } };
 };
 
-
+export interface ProjectDetailsResponse {
+    project: Project;
+    fileCount: number;
+}
 
 
 // ─────────────────────────────────────────
@@ -18,9 +21,9 @@ export const getAllProjects = async (): Promise<Project[]> => {
   return res.data.projects;
 };
 
-export const getProjectById = async (id: number | string): Promise<Project> => {
+export const getProjectById = async (id: number | string): Promise<ProjectDetailsResponse> => {
   const res = await axios.get(`${API_URL}/projects/${id}`, getAuthHeaders());
-  return res.data.project;
+  return res.data;
 };
  
 export const createProject = async (data: Partial<Project>): Promise<Project> => {

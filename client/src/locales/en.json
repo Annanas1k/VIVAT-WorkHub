@@ -142,7 +142,9 @@
       "now_active": "active now",
       "task_count": "Days Remaining",
       "task_done": "task done",
-      "bodget": "Budget"
+      "bodget": "Budget",
+      "files":"Files",
+      "files_count":"Files COunt"
       
     }
   },
