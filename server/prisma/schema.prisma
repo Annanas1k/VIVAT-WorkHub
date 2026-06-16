@@ -71,6 +71,11 @@ enum comment_entity_type {
   task
 }
 
+enum attachment_entity_type {
+  project
+  task
+}
+
 // ─────────────────────────────────────────────────────────────
 // MIGRATION 1 — deja existent
 // ─────────────────────────────────────────────────────────────
@@ -95,6 +100,7 @@ model User {
   createdCustomers Customer[]      @relation("CustomerCreatedBy")
   logs             ActivityLog[]   @relation("LogPerformedBy")
   Comment          Comment[]
+  attachments      Attachment[]
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -228,6 +234,22 @@ model Comment {
 
   Project   Project? @relation(fields: [projectId], references: [id])
   projectId Int?
+}
+
+model Attachment {
+  id           Int                    @id @default(autoincrement())
+  filename     String // numele original
+  storedName   String // numele pe disk
+  mimetype     String
+  size         Int // bytes
+  path         String // calea relativă pe server
+  entityType   attachment_entity_type
+  entityId     Int
+  uploadedById Int?
+  uploadedBy   User?                  @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
+  createdAt    DateTime               @default(now())
+
+  @@index([entityType, entityId])
 }
 
 // ─────────────────────────────────────────────────────────────

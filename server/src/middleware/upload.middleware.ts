@@ -32,3 +32,23 @@ export const uploadAvatar = multer({
     cb(new Error('Only images (png, jpg, jpeg, webp) are allowed!'));
     }
 })
+
+
+// ── Attachments (nou) ──────────────────────────────────────
+const attachmentDir = "uploads/attachments";
+if (!fs.existsSync(attachmentDir)) fs.mkdirSync(attachmentDir, { recursive: true });
+
+const attachmentStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, attachmentDir),
+  filename: (req, file, cb) => {
+    const suffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname);
+    const base = path.basename(file.originalname, ext).replace(/\s+/g, "_");
+    cb(null, `${base}-${suffix}${ext}`);
+  },
+});
+
+export const uploadAttachment = multer({
+  storage: attachmentStorage,
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
+});

@@ -10,6 +10,7 @@ import logRoutes from './routes/log.routes'
 import customersRoutes from './routes/customer.routes'
 import commentRoutes from './routes/comment.routes'
 import path from 'path';
+import attachmentRoutes from "./routes/attachment.routes";
 
 const app: Application = express()
 const PORT: number = Number(process.env.PORT) || 3000
@@ -30,6 +31,7 @@ app.get('/h', (req: Request, res:Response)=>{
 
 
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')))
+app.use("/api/attachments", attachmentRoutes);
 
 app.use('/api/auth', authRoutes)
 app.use('/api/users', userRoutes)
