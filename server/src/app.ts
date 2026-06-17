@@ -14,6 +14,7 @@ import customersRoutes from './routes/customer.routes';
 import commentRoutes from './routes/comment.routes';
 import attachmentRoutes from "./routes/attachment.routes";
 import notificationRoutes from './routes/notification.routes';
+import dashboardRoutes from './routes/dashboard.routes'
 import path from 'path';
 
 const morgan = require('morgan');
@@ -63,6 +64,7 @@ app.use("/api/attachments", attachmentRoutes);
 app.use('/api/notifications', notificationRoutes);
 
 app.use('/api/auth', authRoutes);
+app.use('/api/dashboard', dashboardRoutes)
 app.use('/api/users', userRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
