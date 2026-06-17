@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import type { UserData } from "../types/auth.types";
 import { AuthContext } from "./createContex";
-import socket from "../lib/socket"; // ← adaugi
+import socket from "../lib/socket"; 
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserData | null>(() => {

@@ -166,6 +166,110 @@
       "priority": "Priority",
       "status": "Status"
     }
+  },
+  "dashboard": {
+    "page": {
+      "title": "Dashboard",
+      "subtitle": "Activity summary in VIVAT WorkHub"
+    },
+    "stats": {
+      "activeProjects": "Active Projects",
+      "totalCustomers": "Total Customers",
+      "activeUsers": "Active Users",
+      "tasksCompletedThisMonth": "Tasks Completed (This Month)",
+      "error": "Could not load statistics: {{error}}"
+    },
+    "projectStatus": {
+      "title": "Projects by Status",
+      "error": "Could not load chart data: {{error}}"
+    },
+    "statusLabels": {
+      "active": "Active",
+      "onHold": "On Hold",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "customerType": {
+      "title": "Customers by Type",
+      "individual": "Individuals",
+      "company": "Companies",
+      "countLabel": "Customers",
+      "error": "Could not load data: {{error}}"
+    },
+    "userRoles": {
+      "title": "Users by Role",
+      "countLabel": "Users",
+      "error": "Could not load data: {{error}}",
+      "admin": "Admin",
+      "manager": "Manager",
+      "teamLead": "Team Lead",
+      "frontDev": "Front-end Dev",
+      "backDev": "Back-end Dev",
+      "qa": "QA",
+      "designer": "Designer",
+      "member": "Member"
+    },
+    "activity": {
+      "title": "Recent Activity",
+      "empty": "No recent activity.",
+      "unknownUser": "Someone",
+      "error": "Could not load activity: {{error}}",
+      "actions": {
+        "created": "created",
+        "updated": "updated",
+        "deleted": "deleted",
+        "login": "logged in",
+        "logout": "logged out",
+        "passwordChanged": "changed their password",
+        "roleChanged": "changed the role for",
+        "assigned": "assigned",
+        "unassigned": "unassigned"
+      },
+      "entities": {
+        "project": "the project",
+        "task": "the task",
+        "user": "the user",
+        "customer": "the customer"
+      }
+    },
+    "heatmap": {
+      "title": "Your Activity in the Last Year",
+      "error": "Could not load heatmap data: {{error}}",
+      "tooltipContent": "{{count}} actions on"
+    },
+    "projects": {
+      "title": "My Projects",
+      "empty": "You are not a member of any active project.",
+      "noCustomer": "No customer",
+      "error": "Could not load projects: {{error}}",
+      "status": {
+        "active": "Active",
+        "onHold": "On Hold",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      }
+    },
+    "deadlines": {
+      "title": "Upcoming Deadlines",
+      "empty": "No projects with deadlines in the next 14 days.",
+      "noCustomer": "No customer",
+      "error": "Could not load deadlines: {{error}}",
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "inDays": "In {{count}} days"
+    },
+    "comments": {
+      "title": "Recent Comments",
+      "empty": "No recent comments on your projects.",
+      "inProject": "in {{projectName}}",
+      "error": "Could not load comments: {{error}}"
+    },
+    "files": {
+      "title": "Recent Files",
+      "empty": "No recent files uploaded.",
+      "unknownUser": "Unknown",
+      "error": "Could not load files: {{error}}"
+    }
   }
 
 }

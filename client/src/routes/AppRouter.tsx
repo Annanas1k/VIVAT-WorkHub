@@ -4,7 +4,7 @@ import { BrowserRouter, Navigate, Routes, Route } from "react-router";
 import { AuthPage }           from '../pages/AuthPage';
 import { NotFoundPage }       from '../pages/NotFoundPage';
 import { MainLayout }         from '../layouts/MainLayout';
-import { DashBoardPage }      from '../pages/DashBoardPage';
+import { DashboardPage }      from '../pages/DashBoardPage';
 import { TeamPage }           from '../pages/TeamPage';
 import { SettingsPage }       from '../pages/SettingsPage';
 import { ProfilePage }        from '../pages/ProfilePage';
@@ -57,7 +57,7 @@ export const AppRouter = () => {
           </PrivateRoute>
         }>
           <Route path='/profile/:id' element={<ProfilePage />} />
-          <Route path='/dashboard'   element={<DashBoardPage />} />
+          <Route path='/dashboard'   element={<DashboardPage />} />
           <Route path="/projects">
             <Route index element={<ProjectPage />} />
             <Route path='add' element={<AddProjectPage />} />

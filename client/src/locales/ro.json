@@ -6,12 +6,12 @@
     "email": "Adresă de Email",
     "role": "Rol Cont",
     "security": "Securitate",
-    "curr_pass": "Parolă Curentă",
-    "new_pass": "Parolă Nouă",
+    "curr_pass": "Parola Curentă",
+    "new_pass": "Parola Nouă",
     "save": "Salvează Modificările",
-    "upload_btn": "Schimbă Fotografia",
+    "upload_btn": "Schimbă Foto",
     "size_error": "Fișierul este prea mare! Dimensiunea maximă permisă este de 2MB.",
-    "success": "Profilul a fost actualizat cu succes!"
+    "success": "Profil actualizat cu succes!"
   },
   "team": {
     "title": "Echipă",
@@ -28,13 +28,15 @@
     "error_update": "Nu s-a putut actualiza rolul utilizatorului."
   },
   "sidebar": {
-    "dashboard": "Panou de Control",
+    "dashboard": "Dashboard",
     "projects": "Proiecte",
-    "tasks": "Sarcini",
+    "tasks": "Task-uri",
     "team": "Echipă",
     "settings": "Setări",
     "language": "Limbă",
-    "profile": "Profil"
+    "profile": "Profil",
+    "customers": "Clienți",
+    "logs": "Log-uri"
   },
   "topbar": {
     "logout": "Deconectare"
@@ -42,11 +44,230 @@
   "roles": {
     "admin": "Administrator",
     "manager": "Manager",
-    "team_lead": "Șef de Echipă",
-    "front_dev": "Dezvoltator Frontend",
-    "back_dev": "Dezvoltator Backend",
-    "qa": "Tester QA",
-    "designer": "Designer UI/UX",
-    "dev": "Dezvoltator"
+    "team_lead": "Team Lead",
+    "front_dev": "Frontend Developer",
+    "back_dev": "Backend Developer",
+    "qa": "QA Tester",
+    "designer": "UI/UX Designer",
+    "dev": "Developer"
+  },
+  "logs": {
+    "title": "Log-uri Sistem",
+    "subtitle": "Istoricul complet al acțiunilor din sistem",
+    "loading": "Se încarcă log-urile de activitate...",
+    "no_logs": "Nu au fost găsite activități înregistrate.",
+    "action": "Acțiune",
+    "target": "Entitate",
+    "description": "Descriere / Notă",
+    "date": "Dată și Oră"
+  },
+  "common": {
+    "refresh": "Actualizează",
+    "view_details": "Vezi Detalii"
+  },
+  "admin": {
+    "nav_users": "Management Utilizatori",
+    "nav_customers": "Bază de Date Clienți",
+    "nav_projects": "Arhivă Proiecte",
+    "nav_tasks": "Task-uri Globale",
+    "nav_cars": "Flotă (WebRent)",
+    "nav_logs": "Log-uri Sistem",
+    "loading": "Se încarcă datele...",
+    "title": "Management Utilizatori Sistem",
+    "users_count": "utilizatori listați",
+    "btn_add_user": "Adaugă Utilizator Nou",
+    "btn_add_customer": "Adaugă Client Nou",
+    "btn_add_project": "Adaugă Proiect Nou",
+    "btn_add_task": "Adaugă Task Nou",
+    "confirm_delete": "Sigur dorești să ștergi acest utilizator?",
+    "error_delete": "Eroare la ștergerea utilizatorului",
+    "error_save": "Operațiunea a eșuat"
+  },
+  "customers": {
+    "sidebar": {
+      "customers": "Clienți",
+      "projects": "proiecte"
+    },
+    "details": {
+      "empty_state": "[ selectează un client din listă pentru a vizualiza detaliile profilului ]",
+      "id": "ID",
+      "created_at": "CREAT LA",
+      "type_individual": "persoană fizică",
+      "type_company": "companie",
+      "section_specs": "Detalii Juridice / Profil",
+      "company_name": "Denumire Oficială:",
+      "vat_number": "Cod Fiscal (CUI/TVA):",
+      "reg_number": "Nr. Reg. Comertului:",
+      "first_name": "Prenume:",
+      "last_name": "Nume:",
+      "section_contact": "Contact și Adresă",
+      "section_notes": "Note Interne",
+      "section_projects": "Proiecte Asociate",
+      "th_project_name": "Nume Proiect",
+      "th_status": "Status",
+      "no_projects": "[ zero proiecte active asociate acestui client ]"
+    }
+  },
+  "project_status": {
+    "active": "activ",
+    "completed": "finalizat",
+    "pending": "în așteptare",
+    "archived": "arhivat"
+  },
+  "projects": {
+    "board_title": "Panou Proiecte",
+    "board_subtitle": "Operațiuni interne și distribuție clienți",
+    "add_btn": "Proiect Nou",
+    "empty_column": "Fără proiecte",
+    "status": {
+      "active": "Activ",
+      "on_hold": "În Așteptare",
+      "completed": "Finalizat",
+      "cancelled": "Anulat"
+    },
+    "overview": {
+      "title": "Detalii Proiect",
+      "customer": "Client",
+      "startDate": "Dată Început",
+      "dueDate": "Termen Limită",
+      "budget": "Buget",
+      "description": "Descriere",
+      "updatedAt": "Ultima Actualizare",
+      "total_tasks": "Total Task-uri",
+      "days": "zile",
+      "allocated_budget": "Buget Alocat",
+      "high_priority": "Task-uri Urgente",
+      "urgent_tasks": "prioritate mare",
+      "total_members": "Total Membri",
+      "now_active": "activi acum",
+      "task_count": "Zile Rămase",
+      "task_done": "task finalizat",
+      "bodget": "Buget",
+      "files": "Fișiere",
+      "files_count": "Număr Fișiere"
+    }
+  },
+  "tasks": {
+    "tasks": "task-uri",
+    "total_count": "total task-uri",
+    "unassigned": "Neatribuit",
+    "no_tasks_found": "Nu au fost găsite task-uri care să corespundă filtrelor selectate.",
+    "search_placeholder": "Caută task...",
+    "filter": {
+      "my_tasks": "Doar task-urile mele",
+      "all_statuses": "Toate Statusurile",
+      "all_priorities": "Toate Prioritățile"
+    },
+    "table": {
+      "taskName": "Nume Task",
+      "assignee": "Atribuit lui",
+      "dueDate": "Termen Limită",
+      "priority": "Prioritate",
+      "status": "Status"
+    }
+  },
+  "dashboard": {
+    "page": {
+      "title": "Dashboard",
+      "subtitle": "Sumar al activității din VIVAT WorkHub"
+    },
+    "stats": {
+      "activeProjects": "Proiecte Active",
+      "totalCustomers": "Total Clienți",
+      "activeUsers": "Utilizatori Activi",
+      "tasksCompletedThisMonth": "Task-uri Finalizate (Lună)",
+      "error": "Nu s-au putut încărca statisticile: {{error}}"
+    },
+    "projectStatus": {
+      "title": "Proiecte după Status",
+      "error": "Nu s-au putut încărca datele graficului: {{error}}"
+    },
+    "statusLabels": {
+      "active": "Activ",
+      "onHold": "În Așteptare",
+      "completed": "Finalizat",
+      "cancelled": "Anulat"
+    },
+    "customerType": {
+      "title": "Clienți după Tip",
+      "individual": "Persoane Fizice",
+      "company": "Companie",
+      "countLabel": "Clienți",
+      "error": "Nu s-au putut încărca datele: {{error}}"
+    },
+    "userRoles": {
+      "title": "Utilizatori după Rol",
+      "countLabel": "Utilizatori",
+      "error": "Nu s-au putut încărca datele: {{error}}",
+      "admin": "Admin",
+      "manager": "Manager",
+      "teamLead": "Team Lead",
+      "frontDev": "Front-end Dev",
+      "backDev": "Back-end Dev",
+      "qa": "QA",
+      "designer": "Designer",
+      "member": "Membru"
+    },
+    "activity": {
+      "title": "Activitate Recentă",
+      "empty": "Nicio activitate recentă.",
+      "unknownUser": "Cineva",
+      "error": "Nu s-a putut încărca activitatea: {{error}}",
+      "actions": {
+        "created": "a creat",
+        "updated": "a actualizat",
+        "deleted": "a șters",
+        "login": "s-a autentificat",
+        "logout": "s-a deconectat",
+        "passwordChanged": "și-a schimbat parola",
+        "roleChanged": "a schimbat rolul pentru",
+        "assigned": "a atribuit",
+        "unassigned": "a retras atribuirea"
+      },
+      "entities": {
+        "project": "proiectul",
+        "task": "task-ul",
+        "user": "utilizatorul",
+        "customer": "clientul"
+      }
+    },
+    "heatmap": {
+      "title": "Activitatea Ta în Ultimul An",
+      "error": "Nu s-au putut încărca datele pentru heatmap: {{error}}",
+      "tooltipContent": "{{count}} acțiuni în data de"
+    },
+    "projects": {
+      "title": "Proiectele Mele",
+      "empty": "Nu ești membru în niciun proiect activ.",
+      "noCustomer": "Fără client",
+      "error": "Nu s-au putut încărca proiectele: {{error}}",
+      "status": {
+        "active": "Activ",
+        "onHold": "În Așteptare",
+        "completed": "Finalizat",
+        "cancelled": "Anulat"
+      }
+    },
+    "deadlines": {
+      "title": "Termene Limită Apropiate",
+      "empty": "Niciun proiect cu termen limită în următoarele 14 zile.",
+      "noCustomer": "Fără client",
+      "error": "Nu s-au putut încărca termenele limită: {{error}}",
+      "today": "Azi",
+      "tomorrow": "Mâine",
+      "inDays": "În {{count}} zile"
+    },
+    "comments": {
+      "title": "Comentarii Recente",
+      "empty": "Niciun comentariu recent la proiectele tale.",
+      "inProject": "în {{projectName}}",
+      "error": "Nu s-au putut încărca comentariile: {{error}}"
+    },
+    "files": {
+      "title": "Fișiere Recente",
+      "empty": "Niciun fișier recent încărcat.",
+      "unknownUser": "Necunoscut",
+      "error": "Nu s-au putut încărca fișierele: {{error}}"
+    }
   }
 }
