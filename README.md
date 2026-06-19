@@ -12,7 +12,7 @@
 ![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)
 
 
-<img src="./client/docs/screenshots/presentation.png" alt="VIVAT WorkHub" width="100%">
+<img src="./client/docs/screenshots/vivat_workhub_banner.png" alt="VIVAT WorkHub" width="100%">
 
 
 </div>
