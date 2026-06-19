@@ -11,10 +11,9 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)
 
-<!--
-📸 SCREENSHOT: hero shot of VIVAT WorkHub
+
 <img src="./client/docs/screenshots/presentation.png" alt="VIVAT WorkHub" width="100%">
--->
+
 
 </div>
 
@@ -30,7 +29,6 @@ This repository contains two independent apps:
 |  | architecture, data model, full API reference, env vars, deployment notes |  |
 | 💻 [`/client`](./client) | Web frontend — React, Vite, Tailwind, shadcn/ui | [📖 Client README](./client/README.md) |
 |  | tech stack, routing, hooks, services, auth flow, i18n |  |
-Each app has its own dependencies, scripts, and `.env` — see their respective READMEs for setup, environment variables, full API reference, architecture, and more.
 
 ## ✨ Highlights
 
