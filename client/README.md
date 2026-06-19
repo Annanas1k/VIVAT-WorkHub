@@ -28,7 +28,6 @@ Put your best-looking screenshot here, ~1280x720, e.g.:
   - [✨ Features](#-features)
   - [📸 Screenshots](#-screenshots)
   - [🛠️ Tech Stack](#️-tech-stack)
-  - [⚡ Quick Start](#-quick-start)
   - [🔑 Environment Variables](#-environment-variables)
   - [📜 Scripts](#-scripts)
   - [🧭 Routing](#-routing)
@@ -56,34 +55,17 @@ Put your best-looking screenshot here, ~1280x720, e.g.:
 
 ## 📸 Screenshots
 
-> Add real screenshots here so the README sells the app at a glance — this is usually the single highest-impact section for a popular-looking repo.
-
 | | |
 |---|---|
-| **Dashboard** <br> *(stats, charts, heatmap)* | <!-- ![Dashboard](./docs/screenshots/dashboard.png) --> |
-| **Project Board** <br> *(kanban, drag & drop)* | <!-- ![Board](./docs/screenshots/project-board.png) --> |
-| **Project Overview** <br> *(details, team, budget)* | <!-- ![Project Overview](./docs/screenshots/project-overview.png) --> |
-| **Task Detail** <br> *(assignees, priority, comments)* | <!-- ![Task Detail](./docs/screenshots/task-detail.png) --> |
-| **Discussions** <br> *(real-time comments)* | <!-- ![Discussions](./docs/screenshots/discussions.png) --> |
-| **Admin — Users** <br> *(role management)* | <!-- ![Admin Users](./docs/screenshots/admin-users.png) --> |
-| **Admin — Audit Logs** <br> *(before/after diff)* | <!-- ![Logs](./docs/screenshots/admin-logs.png) --> |
-| **Login** <br> *(email/password + Google)* | <!-- ![Login](./docs/screenshots/auth.png) --> |
+| **Dashboard** <br> *(stats, charts, heatmap)* | ![Dashboard](./docs/screenshots/dashboard.png) |
+| **Project Board** <br> *(kanban, drag & drop)* | ![Board](./docs/screenshots/project-board.png) |
+| **Project Overview** <br> *(details, team, budget)* | ![Project Overview](./docs/screenshots/project-overview.png) |
+| **Task Detail** <br> *(assignees, priority, comments)* | ![Task Detail](./docs/screenshots/task-detail.png) |
+| **Discussions** <br> *(real-time comments)* | ![Discussions](./docs/screenshots/discussions.png) |
+| **Admin — Users** <br> *(role management)* | ![Admin Users](./docs/screenshots/admin-users.png) |
+| **Admin — Audit Logs** <br> *(before/after diff)* | ![Logs](./docs/screenshots/admin-logs.png) |
+| **Login** <br> *(email/password + Google)* | ![Login](./docs/screenshots/auth.png) |
 
-**Suggested setup:**
-```
-client/
-└── docs/
-    └── screenshots/
-        ├── dashboard.png
-        ├── project-board.png
-        ├── project-overview.png
-        ├── task-detail.png
-        ├── discussions.png
-        ├── admin-users.png
-        ├── admin-logs.png
-        └── auth.png
-```
-Uncomment the `<img>`/`![]()` lines above once the files exist. A consistent size (e.g. crop to 1280×800, light mode) makes the table look clean. A short screen-recording (GIF) for the kanban drag & drop is a nice bonus, since that's a feature static images undersell.
 
 ## 🛠️ Tech Stack
 
@@ -102,17 +84,7 @@ Uncomment the `<img>`/`![]()` lines above once the files exist. A consistent siz
 | **Notifications (toast)** | react-hot-toast |
 | **i18n** | i18next + react-i18next |
 
-## ⚡ Quick Start
 
-```bash
-git clone <repository-url>
-cd VIVAT_WorkHub/client
-npm install
-cp .env.example .env     # fill in your values
-npm run dev
-```
-
-➡️ App at `http://localhost:5173` · requires the [backend server](../server) running.
 
 ## 🔑 Environment Variables
 
